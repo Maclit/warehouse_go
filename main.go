@@ -3,14 +3,8 @@ package main
 func main() {
 	width := 5
 	height := 5
-	length := width * height
-	nodes := make([]Node, length)
 
-	warehouse_graph := WarehouseSquareGraph{
-		nodes:  nodes,
-		width:  width,
-		height: height,
-	}
+	warehouse_graph := WarehouseSquareGraph{width: width, height: height}
 	warehouse_graph.initializeNodes()
 	warehouse_graph.addPackage("box_1", 1, 1, GREEN)
 	warehouse_graph.addTransporter("transporter_1", 2, 0)

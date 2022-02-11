@@ -23,9 +23,9 @@ type Truck struct {
 }
 
 type Node struct {
-	box         Box
-	transporter Transporter
-	truck       Truck
+	box         *Box
+	transporter *Transporter
+	truck       *Truck
 	x           int
 	y           int
 }
@@ -37,24 +37,23 @@ type WarehouseSquareGraph struct {
 }
 
 func (graph *WarehouseSquareGraph) initializeNodes() {
+	graph.nodes = make([]Node, graph.width*graph.height)
+
 	for i := 0; i < graph.width*graph.height; i++ {
-		graph.nodes[i] = Node{x: i % graph.width, y: i / graph.height}
+		graph.nodes[i] = Node{x: i % graph.width, y: i / graph.height, box: nil, transporter: nil, truck: nil}
 	}
 }
 
 func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) {
-	graph.nodes[x+(y*graph.height)].box.name = name
-	graph.nodes[x+(y*graph.height)].box.color = color
+	graph.nodes[x+(y*graph.height)].box = &Box{name: name, color: color}
 }
 
 func (graph *WarehouseSquareGraph) addTruck(name string, x, y, max_load, waiting_time int) {
-	graph.nodes[x+(y*graph.height)].truck.name = name
-	graph.nodes[x+(y*graph.height)].truck.max_load = max_load
-	graph.nodes[x+(y*graph.height)].truck.waiting_time = waiting_time
+	graph.nodes[x+(y*graph.height)].truck = &Truck{name: name, max_load: max_load, waiting_time: waiting_time}
 }
 
 func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) {
-	graph.nodes[x+(y*graph.height)].transporter.name = name
+	graph.nodes[x+(y*graph.height)].transporter = &Transporter{name: name}
 }
 
 func (graph *WarehouseSquareGraph) print() {
@@ -63,11 +62,11 @@ func (graph *WarehouseSquareGraph) print() {
 			fmt.Print("\n")
 		}
 		node := graph.nodes[i]
-		if node.box.name != "" {
+		if node.box != nil {
 			fmt.Print("[x]")
-		} else if node.transporter.name != "" {
+		} else if node.transporter != nil {
 			fmt.Print("[t]")
-		} else if node.truck.name != "" {
+		} else if node.truck != nil {
 			fmt.Print("[g]")
 		} else {
 			fmt.Print("[ ]")
