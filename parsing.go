@@ -89,19 +89,19 @@ func find_object(words []string, warehouse *WarehouseSquareGraph) error {
 		if err != nil {
 			return err
 		}
-		warehouse.addPackage(name, pos_color[0], pos_color[1], pos_color[2])
+		warehouse.AddPackage(name, pos_color[0], pos_color[1], pos_color[2])
 	case 3:
 		name, pos, err := info_palette_camion(words)
 		if err != nil {
 			return err
 		}
-		warehouse.addTransporter(name, pos[0], pos[1])
+		warehouse.AddTransporter(name, pos[0], pos[1])
 	case 5:
 		name, pos_size_round, err := info_palette_camion(words)
 		if err != nil {
 			return err
 		}
-		warehouse.addTruck(name, pos_size_round[0], pos_size_round[1], pos_size_round[2], pos_size_round[3])
+		warehouse.AddTruck(name, pos_size_round[0], pos_size_round[1], pos_size_round[2], pos_size_round[3])
 	}
 	return nil
 }
