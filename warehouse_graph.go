@@ -13,7 +13,8 @@ type Box struct {
 	color int
 }
 type Transporter struct {
-	name string
+	name      string
+	is_loaded bool
 }
 
 type Truck struct {
@@ -53,7 +54,23 @@ func (graph *WarehouseSquareGraph) addTruck(name string, x, y, max_load, waiting
 }
 
 func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) {
-	graph.nodes[x+(y*graph.height)].transporter = &Transporter{name: name}
+	graph.nodes[x+(y*graph.height)].transporter = &Transporter{name: name, is_loaded: false}
+}
+
+func (graph *WarehouseSquareGraph) getTransporterList() []Transporter {
+	transporter_list := []Transporter{}
+
+	for x := 0; x < graph.width; x++ {
+		for y := 0; y < graph.height; y++ {
+			if graph.nodes[x+(y*graph.height)].transporter != nil {
+				transporter_list = append(transporter_list, *graph.nodes[x+(y*graph.height)].transporter)
+			}
+		}
+	}
+	return transporter_list
+}
+
+func (graph *WarehouseSquareGraph) moveTransporterToNearestBox(transporter_name string) {
 }
 
 func (graph *WarehouseSquareGraph) print() {
@@ -72,4 +89,5 @@ func (graph *WarehouseSquareGraph) print() {
 			fmt.Print("[ ]")
 		}
 	}
+	fmt.Print("\n")
 }
