@@ -41,5 +41,5 @@ func main() {
 	if err4 != nil {
 		return
 	}
-	play(map_info, warehouse_graph)
+	play(map_info[2], warehouse_graph)
 }

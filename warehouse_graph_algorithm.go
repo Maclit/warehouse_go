@@ -1,5 +1,5 @@
 package main
 
-func MoveTransporterTowardNearestBox(graph *WarehouseSquareGraph, transporter_x, transporter_y int) error {
+func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, transporter_node_x, transporter_node_y int) error {
 	return nil
 }
