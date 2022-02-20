@@ -6,6 +6,11 @@ const (
 	BLUE   int = 2
 )
 
+type Point struct {
+	x int
+	y int
+}
+
 type Box struct {
 	name  string
 	color int
@@ -17,17 +22,18 @@ type Transporter struct {
 }
 
 type Truck struct {
-	name         string
-	max_load     int
-	waiting_time int
+	name          string
+	max_load      int
+	current_load  int
+	waiting_time  int
+	current_timer int
 }
 
 type Node struct {
 	box         *Box
 	transporter *Transporter
 	truck       *Truck
-	x           int
-	y           int
+	point       Point
 }
 
 type WarehouseSquareGraph struct {

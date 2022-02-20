@@ -9,9 +9,10 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 		for _, node := range transporter_node_list {
 			if node.transporter.is_loaded {
 				fmt.Println("Moving to truck.")
+				moveTransporterTowardNearestTruck(warehouse, node)
 			} else {
 				fmt.Println("Moving to nearest box.")
-				moveTransporterTowardNearestBox(warehouse, node.x, node.y)
+				moveTransporterTowardNearestBox(warehouse, node)
 			}
 		}
 	}
