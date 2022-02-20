@@ -9,9 +9,8 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		return
 	}
 	fmt.Println("Found box : ", closest_box)
-	path := make([]Node, 0, 50)
-	shortestpath := shortestPath(graph, start_node, closest_box, path)
-	fmt.Println("Shortest path : ", shortestpath)
+	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
+	fmt.Println("Shortest path : ", shortestPath)
 }
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) error {
@@ -19,27 +18,19 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 }
 
 func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node) []Node {
-	for _, step := range path {
-		if step.point.x == start.point.x && step.point.y == start.point.y {
-			return path
-		}
-	}
 	path = append(path, start)
-	if start.point.x == end.point.x && start.point.y == end.point.y {
+	if isNodeInArray(path, end) {
 		return path
 	}
 	shortest := make([]Node, 0)
 	neighbors := getAllNeighborsNode(graph, start)
 	for _, node := range neighbors {
-		for _, step := range path {
-			if step.point.x == node.point.x && step.point.y == node.point.y {
-				continue
-			}
-		}
-		newPath := shortestPath(graph, node, end, path)
-		if len(newPath) > 0 {
-			if len(shortest) == 0 || (len(newPath) < len(shortest)) {
-				shortest = newPath
+		if !isNodeInArray(path, node) {
+			newPath := shortestPath(graph, node, end, path)
+			if len(newPath) > 0 {
+				if len(shortest) == 0 || (len(newPath) < len(shortest)) {
+					shortest = newPath
+				}
 			}
 		}
 	}
@@ -76,29 +67,38 @@ func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {
 	var x, y int
 
 	neighbors := []Node{}
-	if node.point.x >= 0 && node.point.x < graph.width-1 { // Left
+	if node.point.x >= 0 && node.point.x < graph.width-1 {
 		x = node.point.x + 1
 		y = node.point.y
 		node := graph.nodes[x+(y*graph.height)]
 		neighbors = append(neighbors, node)
 	}
-	if node.point.x > 0 && node.point.x <= graph.width-1 { // Left
+	if node.point.x > 0 && node.point.x <= graph.width-1 {
 		x = node.point.x - 1
 		y = node.point.y
 		node := graph.nodes[x+(y*graph.height)]
 		neighbors = append(neighbors, node)
 	}
-	if node.point.y >= 0 && node.point.y < graph.height-1 { // Left
+	if node.point.y >= 0 && node.point.y < graph.height-1 {
 		x = node.point.x
 		y = node.point.y + 1
 		node := graph.nodes[x+(y*graph.height)]
 		neighbors = append(neighbors, node)
 	}
-	if node.point.y > 0 && node.point.y <= graph.height-1 { // Left
+	if node.point.y > 0 && node.point.y <= graph.height-1 {
 		x = node.point.x
 		y = node.point.y - 1
 		node := graph.nodes[x+(y*graph.height)]
 		neighbors = append(neighbors, node)
 	}
 	return neighbors
+}
+
+func isNodeInArray(array []Node, node Node) bool {
+	for _, element := range array {
+		if element.point.x == node.point.x && element.point.y == node.point.y {
+			return true
+		}
+	}
+	return false
 }

@@ -2,7 +2,7 @@ package main
 
 func main() {
 	text1 := "5 5 1"
-	text2 := "box_1 1 1 green"
+	text2 := "box_1 4 3 green"
 	text3 := "transporter_1 2 0"
 	text4 := "truck 3 4 10 50"
 
