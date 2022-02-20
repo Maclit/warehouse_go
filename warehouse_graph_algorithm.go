@@ -13,8 +13,15 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 	fmt.Println("Shortest path : ", shortestPath)
 }
 
-func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) error {
-	return nil
+func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
+	closest_box := findClosestTruck(graph, start_node)
+	if closest_box.truck == nil {
+		fmt.Println("No truck found.")
+		return
+	}
+	fmt.Println("Found truck : ", closest_box)
+	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
+	fmt.Println("Shortest path : ", shortestPath)
 }
 
 func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node) []Node {
@@ -37,8 +44,26 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 	return shortest
 }
 
-func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) (Node, error) {
-	return Node{}, nil
+func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) Node {
+	if start_node.truck != nil {
+		return start_node
+	}
+	to_visit := getAllNeighborsNode(graph, start_node)
+	for {
+		if len(to_visit) == 0 {
+			fmt.Println()
+			return Node{}
+		}
+		next_node := to_visit[0]
+		to_visit = to_visit[1:]
+		if next_node.truck != nil {
+			return next_node
+		}
+		neightbors_list := getAllNeighborsNode(graph, next_node)
+		if len(neightbors_list) > 0 {
+			to_visit = append(to_visit, neightbors_list...)
+		}
+	}
 }
 
 func findClosestBox(graph *WarehouseSquareGraph, start_node Node) Node {
