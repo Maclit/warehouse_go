@@ -2,17 +2,6 @@ package main
 
 import "fmt"
 
-type Array []string
-
-func (arr Array) contains(str string) bool {
-	for _, v := range arr {
-		if str == v {
-			return true
-		}
-	}
-	return false
-}
-
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	closest_box := findClosestBox(graph, start_node)
 	if closest_box.box == nil {
@@ -20,10 +9,41 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		return
 	}
 	fmt.Println("Found box : ", closest_box)
+	path := make([]Node, 0, 50)
+	shortestpath := shortestPath(graph, start_node, closest_box, path)
+	fmt.Println("Shortest path : ", shortestpath)
 }
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) error {
 	return nil
+}
+
+func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node) []Node {
+	for _, step := range path {
+		if step.point.x == start.point.x && step.point.y == start.point.y {
+			return path
+		}
+	}
+	path = append(path, start)
+	if start.point.x == end.point.x && start.point.y == end.point.y {
+		return path
+	}
+	shortest := make([]Node, 0)
+	neighbors := getAllNeighborsNode(graph, start)
+	for _, node := range neighbors {
+		for _, step := range path {
+			if step.point.x == node.point.x && step.point.y == node.point.y {
+				continue
+			}
+		}
+		newPath := shortestPath(graph, node, end, path)
+		if len(newPath) > 0 {
+			if len(shortest) == 0 || (len(newPath) < len(shortest)) {
+				shortest = newPath
+			}
+		}
+	}
+	return shortest
 }
 
 func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) (Node, error) {
