@@ -9,7 +9,12 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 	}
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
 	if len(shortestPath) == 2 {
-		// Pick up box
+		box_x := shortestPath[1].point.x
+		box_y := shortestPath[1].point.y
+		transporter_x := start_node.point.x
+		transporter_y := start_node.point.y
+		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.is_loaded = true
+		graph.nodes[box_x+(box_y*graph.height)].box = nil
 	} else {
 		new_x := shortestPath[1].point.x
 		new_y := shortestPath[1].point.y
