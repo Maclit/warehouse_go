@@ -4,6 +4,9 @@ import "fmt"
 
 func play(turns int, warehouse *WarehouseSquareGraph) {
 	warehouse.Print()
+	if isWarehouseEmpty(warehouse) {
+		return // TODO finish
+	}
 	for i := 0; i < turns; i++ {
 		transporter_node_list := getWharehouseTransporterNodeList(warehouse)
 		for _, node := range transporter_node_list {
@@ -14,6 +17,9 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 				fmt.Println("Moving to nearest box.")
 				moveTransporterTowardNearestBox(warehouse, node)
 			}
+		}
+		if isGameFinished(warehouse) {
+			return // TODO finish
 		}
 	}
 	warehouse.Print()

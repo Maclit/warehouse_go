@@ -1,9 +1,9 @@
 package main
 
 const (
-	GREEN  int = 0
-	YELLOW int = 1
-	BLUE   int = 2
+	GREEN  int = 200
+	YELLOW int = 100
+	BLUE   int = 500
 )
 
 type Point struct {
@@ -19,6 +19,7 @@ type Box struct {
 type Transporter struct {
 	name      string
 	is_loaded bool
+	weight    int
 }
 
 type Truck struct {
@@ -27,6 +28,7 @@ type Truck struct {
 	current_load  int
 	waiting_time  int
 	current_timer int
+	is_gone       bool
 }
 
 type Node struct {

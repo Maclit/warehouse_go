@@ -3,6 +3,9 @@ package main
 import "fmt"
 
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
+	if isWarehouseEmpty(graph) {
+		return
+	}
 	closest_box := findClosestBox(graph, start_node)
 	if closest_box.box == nil {
 		return
@@ -14,6 +17,7 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		transporter_x := start_node.point.x
 		transporter_y := start_node.point.y
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.is_loaded = true
+		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.weight = graph.nodes[box_x+(box_y*graph.height)].box.color
 		graph.nodes[box_x+(box_y*graph.height)].box = nil
 	} else {
 		new_x := shortestPath[1].point.x
@@ -32,7 +36,17 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 	}
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
 	if len(shortestPath) == 1 {
-		// Load truck
+		x := shortestPath[0].point.x
+		y := shortestPath[0].point.y
+		if graph.nodes[x+(y*graph.height)].truck.is_gone {
+			return
+		}
+		graph.nodes[x+(y*graph.height)].truck.current_load += graph.nodes[x+(y*graph.height)].transporter.weight
+		graph.nodes[x+(y*graph.height)].transporter.weight = 0
+		graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
+		if isWarehouseEmpty(graph) {
+			graph.nodes[x+(y*graph.height)].truck.is_gone = true
+		}
 	} else {
 		new_x := shortestPath[1].point.x
 		new_y := shortestPath[1].point.y
@@ -145,4 +159,30 @@ func isNodeInArray(array []Node, node Node) bool {
 		}
 	}
 	return false
+}
+
+func isWarehouseEmpty(graph *WarehouseSquareGraph) bool {
+	for i := 0; i < graph.width*graph.height; i++ {
+		node := graph.nodes[i]
+		if node.box != nil {
+			return false
+		}
+	}
+	return true
+}
+
+func isGameFinished(graph *WarehouseSquareGraph) bool {
+	for i := 0; i < graph.width*graph.height; i++ {
+		node := graph.nodes[i]
+		if node.box != nil {
+			return false
+		}
+		if node.transporter != nil && node.transporter.is_loaded {
+			return false
+		}
+		if node.truck != nil && !node.truck.is_gone {
+			return false
+		}
+	}
+	return true
 }

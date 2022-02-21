@@ -30,6 +30,7 @@ func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, max_load, waiting
 		current_load:  0,
 		waiting_time:  waiting_time,
 		current_timer: 0,
+		is_gone:       false,
 	}
 	graph.nodes[x+(y*graph.height)].truck = &truck
 }
@@ -38,6 +39,7 @@ func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
 	transporter := Transporter{
 		name:      name,
 		is_loaded: false,
+		weight:    0,
 	}
 	graph.nodes[x+(y*graph.height)].transporter = &transporter
 }
