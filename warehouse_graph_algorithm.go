@@ -5,23 +5,37 @@ import "fmt"
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	closest_box := findClosestBox(graph, start_node)
 	if closest_box.box == nil {
-		fmt.Println("No box found.")
 		return
 	}
-	fmt.Println("Found box : ", closest_box)
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
-	fmt.Println("Shortest path : ", shortestPath)
+	if len(shortestPath) == 2 {
+		// Pick up box
+	} else {
+		new_x := shortestPath[1].point.x
+		new_y := shortestPath[1].point.y
+		old_x := start_node.point.x
+		old_y := start_node.point.y
+		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
+		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
+	}
 }
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
 	closest_box := findClosestTruck(graph, start_node)
 	if closest_box.truck == nil {
-		fmt.Println("No truck found.")
 		return
 	}
-	fmt.Println("Found truck : ", closest_box)
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
-	fmt.Println("Shortest path : ", shortestPath)
+	if len(shortestPath) == 1 {
+		// Load truck
+	} else {
+		new_x := shortestPath[1].point.x
+		new_y := shortestPath[1].point.y
+		old_x := start_node.point.x
+		old_y := start_node.point.y
+		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
+		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
+	}
 }
 
 func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node) []Node {
