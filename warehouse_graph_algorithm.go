@@ -3,7 +3,9 @@ package main
 import "fmt"
 
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
+	fmt.Print(start_node.transporter.name)
 	if isWarehouseEmpty(graph) {
+		fmt.Print(" WAIT")
 		return
 	}
 	closest_box := findClosestBox(graph, start_node)
@@ -18,6 +20,16 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		transporter_y := start_node.point.y
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.is_loaded = true
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.weight = graph.nodes[box_x+(box_y*graph.height)].box.color
+		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.box_name = graph.nodes[box_x+(box_y*graph.height)].box.name
+		fmt.Printf(" TAKE %s ", graph.nodes[box_x+(box_y*graph.height)].box.name)
+		switch graph.nodes[box_x+(box_y*graph.height)].box.color {
+		case YELLOW:
+			fmt.Print("YELLOW\n")
+		case GREEN:
+			fmt.Print("GREEN\n")
+		case BLUE:
+			fmt.Print("BLUE\n")
+		}
 		graph.nodes[box_x+(box_y*graph.height)].box = nil
 	} else {
 		new_x := shortestPath[1].point.x
@@ -26,12 +38,15 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		old_y := start_node.point.y
 		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
 		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
+		fmt.Printf(" GO [%d,%d]\n", new_x, new_y)
 	}
 }
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
+	fmt.Print(start_node.transporter.name)
 	closest_box := findClosestTruck(graph, start_node)
 	if closest_box.truck == nil {
+		fmt.Print(" WAIT")
 		return
 	}
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
@@ -42,6 +57,15 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 			return
 		}
 		graph.nodes[x+(y*graph.height)].truck.current_load += graph.nodes[x+(y*graph.height)].transporter.weight
+		fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box_name)
+		switch graph.nodes[x+(y*graph.height)].transporter.weight {
+		case YELLOW:
+			fmt.Print("YELLOW\n")
+		case GREEN:
+			fmt.Print("GREEN\n")
+		case BLUE:
+			fmt.Print("BLUE\n")
+		}
 		graph.nodes[x+(y*graph.height)].transporter.weight = 0
 		graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
 		if isWarehouseEmpty(graph) {
@@ -54,6 +78,7 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 		old_y := start_node.point.y
 		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
 		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
+		fmt.Printf(" GO [%d,%d]\n", new_x, new_y)
 	}
 }
 

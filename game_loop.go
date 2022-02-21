@@ -3,26 +3,24 @@ package main
 import "fmt"
 
 func play(turns int, warehouse *WarehouseSquareGraph) {
-	warehouse.Print()
 	if isWarehouseEmpty(warehouse) {
 		return // TODO finish
 	}
 	for i := 0; i < turns; i++ {
+		fmt.Printf("tour %d\n", i)
 		transporter_node_list := getWharehouseTransporterNodeList(warehouse)
 		for _, node := range transporter_node_list {
 			if node.transporter.is_loaded {
-				fmt.Println("Moving to truck.")
 				moveTransporterTowardNearestTruck(warehouse, node)
 			} else {
-				fmt.Println("Moving to nearest box.")
 				moveTransporterTowardNearestBox(warehouse, node)
 			}
 		}
 		if isGameFinished(warehouse) {
 			return // TODO finish
 		}
+		fmt.Println()
 	}
-	warehouse.Print()
 }
 
 func getWharehouseTransporterNodeList(graph *WarehouseSquareGraph) []Node {

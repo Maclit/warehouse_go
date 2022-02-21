@@ -40,6 +40,7 @@ func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
 		name:      name,
 		is_loaded: false,
 		weight:    0,
+		box_name:  "",
 	}
 	graph.nodes[x+(y*graph.height)].transporter = &transporter
 }

@@ -20,6 +20,7 @@ type Transporter struct {
 	name      string
 	is_loaded bool
 	weight    int
+	box_name  string
 }
 
 type Truck struct {
