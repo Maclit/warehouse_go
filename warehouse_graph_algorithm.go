@@ -109,7 +109,10 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 }
 
 func findClosestObject(graph *WarehouseSquareGraph, start_node Node, to_find int) Node {
-	if start_node.truck != nil {
+	if to_find == TRUCK && start_node.truck != nil {
+		return start_node
+	}
+	if to_find == BOX && start_node.box != nil {
 		return start_node
 	}
 	to_visit := getAllNeighborsNode(graph, start_node)
