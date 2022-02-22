@@ -1,9 +1,9 @@
 package main
 
 func main() {
-	warehouse_graph, nb_turn, err := AnalyzeAllText()
+	warehouseGraph, nbTurn, err := AnalyzeAllText()
 	if err != nil {
 		return
 	}
-	play(nb_turn, warehouse_graph)
+	play(nbTurn, warehouseGraph)
 }

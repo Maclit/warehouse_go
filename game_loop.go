@@ -8,8 +8,8 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 	}
 	for i := 0; i < turns; i++ {
 		fmt.Printf("tour %d\n", i+1)
-		transporter_node_list := getWharehouseTransporterNodeList(warehouse)
-		for _, node := range transporter_node_list {
+		transporterNodeList := getWharehouseTransporterNodeList(warehouse)
+		for _, node := range transporterNodeList {
 			if node.transporter.is_loaded {
 				moveTransporterTowardNearestTruck(warehouse, node)
 			} else {
@@ -25,14 +25,14 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 }
 
 func getWharehouseTransporterNodeList(graph *WarehouseSquareGraph) []Node {
-	transporter_node_list := []Node{}
+	transporterNodeList := []Node{}
 
 	for x := 0; x < graph.width; x++ {
 		for y := 0; y < graph.height; y++ {
 			if graph.nodes[x+(y*graph.height)].transporter != nil {
-				transporter_node_list = append(transporter_node_list, graph.nodes[x+(y*graph.height)])
+				transporterNodeList = append(transporterNodeList, graph.nodes[x+(y*graph.height)])
 			}
 		}
 	}
-	return transporter_node_list
+	return transporterNodeList
 }

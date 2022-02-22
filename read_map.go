@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func get_map() string {
+func getMap() string {
 	fmt.Print("Enter map file path: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
@@ -20,11 +20,11 @@ func get_map() string {
 	return input
 }
 
-func read_map() []string {
+func readMap() []string {
 
 	lines := []string{}
 	var line string
-	mapfile := get_map()
+	mapfile := getMap()
 	f, err := os.Open(mapfile)
 
 	if err != nil {

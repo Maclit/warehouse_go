@@ -94,7 +94,7 @@ func divide(text string) ([]string, error) {
 
 // AnalyzeAllText use the array string return by readMap to create the graph WarehouseSquareGraph and the maximum number of turn
 func AnalyzeAllText() (warehouseGraph *WarehouseSquareGraph, round int, err error) {
-	text := read_map()
+	text := readMap()
 
 	firstLine, err := divide(text[0])
 	if err != nil {
