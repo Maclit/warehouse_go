@@ -15,7 +15,8 @@ func get_map() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	input = strings.Replace(input, "\r\n", "", -1)
+	input = strings.Replace(input, "\n", "", -1)
+	input = strings.Replace(input, "\r", "", -1)
 	return input
 }
 
