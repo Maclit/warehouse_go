@@ -5,9 +5,7 @@ import (
 	"strings"
 )
 
-func info_map(text []string) ([]int, error) {
-	infoMap := []int{}
-
+func infoMap(text []string) (infoMap []int, err error) {
 	for n := 0; n < len(text); n++ {
 		intVar, err := strconv.Atoi(text[n])
 		if err != nil || intVar < 0 {
@@ -19,9 +17,8 @@ func info_map(text []string) ([]int, error) {
 	return infoMap, nil
 }
 
-func info_colis(text []string) (string, []int, error) {
-	infoColis := []int{}
-	infoNameColis := text[0]
+func infoColis(text []string) (infoNameColis string, infoColis []int, err error) {
+	infoNameColis = text[0]
 
 	for n := 1; n < len(text)-1; n++ {
 		intVar, err := strconv.Atoi(text[n])
@@ -47,9 +44,8 @@ func info_colis(text []string) (string, []int, error) {
 	return infoNameColis, infoColis, nil
 }
 
-func info_palette_camion(text []string) (string, []int, error) {
-	infoPosColis := []int{}
-	infoColis := text[0]
+func infoPaletteCamion(text []string) (infoColis string, infoPosColis []int, err error) {
+	infoColis = text[0]
 
 	for n := 1; n < len(text); n++ {
 		intVar, err := strconv.Atoi(text[n])
@@ -63,26 +59,26 @@ func info_palette_camion(text []string) (string, []int, error) {
 	return infoColis, infoPosColis, nil
 }
 
-func find_object(words []string, warehouse *WarehouseSquareGraph) error {
+func findObject(words []string, warehouse *WarehouseSquareGraph) error {
 	switch size := len(words); size {
 	case 4:
-		name, pos_color, err := info_colis(words)
+		name, posColor, err := infoColis(words)
 		if err != nil {
 			return err
 		}
-		warehouse.AddPackage(name, pos_color[0], pos_color[1], pos_color[2])
+		warehouse.AddPackage(name, posColor[0], posColor[1], posColor[2])
 	case 3:
-		name, pos, err := info_palette_camion(words)
+		name, pos, err := infoPaletteCamion(words)
 		if err != nil {
 			return err
 		}
 		warehouse.AddTransporter(name, pos[0], pos[1])
 	case 5:
-		name, pos_size_round, err := info_palette_camion(words)
+		name, posSizeRound, err := infoPaletteCamion(words)
 		if err != nil {
 			return err
 		}
-		warehouse.AddTruck(name, pos_size_round[0], pos_size_round[1], pos_size_round[2], pos_size_round[3])
+		warehouse.AddTruck(name, posSizeRound[0], posSizeRound[1], posSizeRound[2], posSizeRound[3])
 	}
 	return nil
 }
@@ -96,31 +92,32 @@ func divide(text string) ([]string, error) {
 	return words, nil
 }
 
-func AnalyzeAllText() (*WarehouseSquareGraph, int, error) {
+// AnalyzeAllText use the array string return by readMap to create the graph WarehouseSquareGraph and the maximum number of turn
+func AnalyzeAllText() (warehouseGraph *WarehouseSquareGraph, round int, err error) {
 	text := read_map()
 
 	firstLine, err := divide(text[0])
 	if err != nil {
-		warehouse_graph_err := createWarehouseGraph(0, 0)
-		return warehouse_graph_err, 0, err
+		warehouseGraphErr := createWarehouseGraph(0, 0)
+		return warehouseGraphErr, 0, err
 	}
-	map_info, err_map := info_map(firstLine)
-	if err_map != nil {
-		warehouse_graph_err := createWarehouseGraph(0, 0)
-		return warehouse_graph_err, 0, err_map
+	mapInfo, errMap := infoMap(firstLine)
+	if errMap != nil {
+		warehouseGraphErr := createWarehouseGraph(0, 0)
+		return warehouseGraphErr, 0, errMap
 	}
-	warehouse_graph := createWarehouseGraph(map_info[0], map_info[1])
+	warehouseGraph = createWarehouseGraph(mapInfo[0], mapInfo[1])
 	for n := 1; n < len(text); n++ {
 		line, err := divide(text[n])
 		if err != nil {
-			warehouse_graph_err := createWarehouseGraph(0, 0)
-			return warehouse_graph_err, 0, err
+			warehouseGraphErr := createWarehouseGraph(0, 0)
+			return warehouseGraphErr, 0, err
 		}
-		err_line := find_object(line, warehouse_graph)
-		if err_line != nil {
-			warehouse_graph_err := createWarehouseGraph(0, 0)
-			return warehouse_graph_err, 0, err_line
+		errLine := findObject(line, warehouseGraph)
+		if errLine != nil {
+			warehouseGraphErr := createWarehouseGraph(0, 0)
+			return warehouseGraphErr, 0, errLine
 		}
 	}
-	return warehouse_graph, map_info[2], nil
+	return warehouseGraph, mapInfo[2], nil
 }
