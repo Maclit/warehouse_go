@@ -109,7 +109,6 @@ func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) Node {
 	to_visit := getAllNeighborsNode(graph, start_node)
 	for {
 		if len(to_visit) == 0 {
-			fmt.Println()
 			return Node{}
 		}
 		next_node := to_visit[0]
@@ -131,7 +130,6 @@ func findClosestBox(graph *WarehouseSquareGraph, start_node Node) Node {
 	to_visit := getAllNeighborsNode(graph, start_node)
 	for {
 		if len(to_visit) == 0 {
-			fmt.Println()
 			return Node{}
 		}
 		next_node := to_visit[0]
