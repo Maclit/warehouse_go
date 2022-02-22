@@ -5,6 +5,7 @@ import "fmt"
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
 	if isWarehouseEmpty(graph) {
+		// TODO: Move if on truck
 		fmt.Print(" WAIT\n")
 		return
 	}
