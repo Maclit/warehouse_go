@@ -95,3 +95,32 @@ func divide(text string) ([]string, error) {
 	}
 	return words, nil
 }
+
+func AnalyzeAllText() (*WarehouseSquareGraph, int, error) {
+	text := read_map()
+
+	firstLine, err := divide(text[0])
+	if err != nil {
+		warehouse_graph_err := createWarehouseGraph(0, 0)
+		return warehouse_graph_err, 0, err
+	}
+	map_info, err_map := info_map(firstLine)
+	if err_map != nil {
+		warehouse_graph_err := createWarehouseGraph(0, 0)
+		return warehouse_graph_err, 0, err_map
+	}
+	warehouse_graph := createWarehouseGraph(map_info[0], map_info[1])
+	for n := 1; n < len(text); n++ {
+		line, err := divide(text[n])
+		if err != nil {
+			warehouse_graph_err := createWarehouseGraph(0, 0)
+			return warehouse_graph_err, 0, err
+		}
+		err_line := find_object(line, warehouse_graph)
+		if err_line != nil {
+			warehouse_graph_err := createWarehouseGraph(0, 0)
+			return warehouse_graph_err, 0, err_line
+		}
+	}
+	return warehouse_graph, map_info[2], nil
+}

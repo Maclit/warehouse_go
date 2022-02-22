@@ -7,7 +7,7 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 		return // TODO finish
 	}
 	for i := 0; i < turns; i++ {
-		fmt.Printf("tour %d\n", i)
+		fmt.Printf("tour %d\n", i+1)
 		transporter_node_list := getWharehouseTransporterNodeList(warehouse)
 		for _, node := range transporter_node_list {
 			if node.transporter.is_loaded {
@@ -19,6 +19,7 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 		if isGameFinished(warehouse) {
 			return // TODO finish
 		}
+		warehouse.Print()
 		fmt.Println()
 	}
 }

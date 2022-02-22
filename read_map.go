@@ -9,13 +9,13 @@ import (
 )
 
 func get_map() string {
-	fmt.Print("Enter text: ")
+	fmt.Print("Enter map file path: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
 	}
-	input = strings.Replace(input, "\r\n", "", -1)
+	input = strings.Replace(input, "\n", "", -1)
 	return input
 }
 
