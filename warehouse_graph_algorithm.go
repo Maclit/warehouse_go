@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+const (
+	TRUCK = 0
+	BOX   = 1
+)
+
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
 	if isWarehouseEmpty(graph) {
@@ -9,7 +14,7 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		fmt.Print(" WAIT\n")
 		return
 	}
-	closest_box := findClosestBox(graph, start_node)
+	closest_box := findClosestObject(graph, start_node, BOX)
 	if closest_box.box == nil {
 		return
 	}
@@ -45,7 +50,7 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
-	closest_box := findClosestTruck(graph, start_node)
+	closest_box := findClosestObject(graph, start_node, TRUCK)
 	if closest_box.truck == nil {
 		fmt.Print(" WAIT\n")
 		return
@@ -103,7 +108,7 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 	return shortest
 }
 
-func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) Node {
+func findClosestObject(graph *WarehouseSquareGraph, start_node Node, to_find int) Node {
 	if start_node.truck != nil {
 		return start_node
 	}
@@ -116,34 +121,10 @@ func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) Node {
 		next_node := to_visit[0]
 		to_visit = to_visit[1:]
 		visited = append(visited, next_node)
-		if next_node.truck != nil {
+		if to_find == TRUCK && next_node.truck != nil {
 			return next_node
 		}
-		neightbors_list := getAllNeighborsNode(graph, next_node)
-		if len(neightbors_list) > 0 {
-			for _, node := range neightbors_list {
-				if !isNodeInArray(visited, node) {
-					to_visit = append(to_visit, node)
-				}
-			}
-		}
-	}
-}
-
-func findClosestBox(graph *WarehouseSquareGraph, start_node Node) Node {
-	if start_node.box != nil {
-		return start_node
-	}
-	to_visit := getAllNeighborsNode(graph, start_node)
-	visited := []Node{}
-	for {
-		if len(to_visit) == 0 {
-			return Node{}
-		}
-		next_node := to_visit[0]
-		to_visit = to_visit[1:]
-		visited = append(visited, next_node)
-		if next_node.box != nil {
+		if to_find == BOX && next_node.box != nil {
 			return next_node
 		}
 		neightbors_list := getAllNeighborsNode(graph, next_node)
