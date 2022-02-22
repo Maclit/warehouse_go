@@ -1,5 +1,9 @@
 package main
 
+func getEmptyNeighbor(graph *WarehouseSquareGraph, node Node) Node {
+	return Node{}
+}
+
 func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {
 	var x, y int
 
@@ -7,33 +11,29 @@ func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {
 	if node.point.x >= 0 && node.point.x < graph.width-1 {
 		x = node.point.x + 1
 		y = node.point.y
-		node := graph.nodes[x+(y*graph.height)]
-		if node.transporter == nil {
-			neighbors = append(neighbors, node)
+		if graph.nodes[x+(y*graph.height)].transporter == nil {
+			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
 		}
 	}
 	if node.point.x > 0 && node.point.x <= graph.width-1 {
 		x = node.point.x - 1
 		y = node.point.y
-		node := graph.nodes[x+(y*graph.height)]
-		if node.transporter == nil {
-			neighbors = append(neighbors, node)
+		if graph.nodes[x+(y*graph.height)].transporter == nil {
+			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
 		}
 	}
 	if node.point.y >= 0 && node.point.y < graph.height-1 {
 		x = node.point.x
 		y = node.point.y + 1
-		node := graph.nodes[x+(y*graph.height)]
-		if node.transporter == nil {
-			neighbors = append(neighbors, node)
+		if graph.nodes[x+(y*graph.height)].transporter == nil {
+			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
 		}
 	}
 	if node.point.y > 0 && node.point.y <= graph.height-1 {
 		x = node.point.x
 		y = node.point.y - 1
-		node := graph.nodes[x+(y*graph.height)]
-		if node.transporter == nil {
-			neighbors = append(neighbors, node)
+		if graph.nodes[x+(y*graph.height)].transporter == nil {
+			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
 		}
 	}
 	return neighbors
