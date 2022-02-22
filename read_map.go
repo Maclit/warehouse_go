@@ -23,8 +23,8 @@ func read_map() []string {
 
 	lines := []string{}
 	var line string
-	mapfile := get_map()
-	f, err := os.Open(mapfile)
+	// mapfile := get_map()
+	f, err := os.Open("./test.txt")
 
 	if err != nil {
 		log.Fatal(err)

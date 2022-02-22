@@ -5,7 +5,7 @@ import "fmt"
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
 	if isWarehouseEmpty(graph) {
-		fmt.Print(" WAIT")
+		fmt.Print(" WAIT\n")
 		return
 	}
 	closest_box := findClosestBox(graph, start_node)
@@ -46,7 +46,7 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 	fmt.Print(start_node.transporter.name)
 	closest_box := findClosestTruck(graph, start_node)
 	if closest_box.truck == nil {
-		fmt.Print(" WAIT")
+		fmt.Print(" WAIT\n")
 		return
 	}
 	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
@@ -107,19 +107,24 @@ func findClosestTruck(graph *WarehouseSquareGraph, start_node Node) Node {
 		return start_node
 	}
 	to_visit := getAllNeighborsNode(graph, start_node)
+	visited := []Node{}
 	for {
 		if len(to_visit) == 0 {
-			fmt.Println()
 			return Node{}
 		}
 		next_node := to_visit[0]
 		to_visit = to_visit[1:]
+		visited = append(visited, next_node)
 		if next_node.truck != nil {
 			return next_node
 		}
 		neightbors_list := getAllNeighborsNode(graph, next_node)
 		if len(neightbors_list) > 0 {
-			to_visit = append(to_visit, neightbors_list...)
+			for _, node := range neightbors_list {
+				if !isNodeInArray(visited, node) {
+					to_visit = append(to_visit, node)
+				}
+			}
 		}
 	}
 }
@@ -129,19 +134,24 @@ func findClosestBox(graph *WarehouseSquareGraph, start_node Node) Node {
 		return start_node
 	}
 	to_visit := getAllNeighborsNode(graph, start_node)
+	visited := []Node{}
 	for {
 		if len(to_visit) == 0 {
-			fmt.Println()
 			return Node{}
 		}
 		next_node := to_visit[0]
 		to_visit = to_visit[1:]
+		visited = append(visited, next_node)
 		if next_node.box != nil {
 			return next_node
 		}
 		neightbors_list := getAllNeighborsNode(graph, next_node)
 		if len(neightbors_list) > 0 {
-			to_visit = append(to_visit, neightbors_list...)
+			for _, node := range neightbors_list {
+				if !isNodeInArray(visited, node) {
+					to_visit = append(to_visit, node)
+				}
+			}
 		}
 	}
 }
@@ -154,25 +164,33 @@ func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {
 		x = node.point.x + 1
 		y = node.point.y
 		node := graph.nodes[x+(y*graph.height)]
-		neighbors = append(neighbors, node)
+		if node.transporter == nil {
+			neighbors = append(neighbors, node)
+		}
 	}
 	if node.point.x > 0 && node.point.x <= graph.width-1 {
 		x = node.point.x - 1
 		y = node.point.y
 		node := graph.nodes[x+(y*graph.height)]
-		neighbors = append(neighbors, node)
+		if node.transporter == nil {
+			neighbors = append(neighbors, node)
+		}
 	}
 	if node.point.y >= 0 && node.point.y < graph.height-1 {
 		x = node.point.x
 		y = node.point.y + 1
 		node := graph.nodes[x+(y*graph.height)]
-		neighbors = append(neighbors, node)
+		if node.transporter == nil {
+			neighbors = append(neighbors, node)
+		}
 	}
 	if node.point.y > 0 && node.point.y <= graph.height-1 {
 		x = node.point.x
 		y = node.point.y - 1
 		node := graph.nodes[x+(y*graph.height)]
-		neighbors = append(neighbors, node)
+		if node.transporter == nil {
+			neighbors = append(neighbors, node)
+		}
 	}
 	return neighbors
 }

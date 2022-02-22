@@ -19,6 +19,7 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 		if isGameFinished(warehouse) {
 			return // TODO finish
 		}
+		warehouse.Print()
 		fmt.Println()
 	}
 }
