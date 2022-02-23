@@ -13,10 +13,10 @@ It will compile an executable for the platform you currently are working on.
 To execute the project, you can use the command :
 
 ```
-go run .
+go run . [map_file_path]
 ```
 
-The program will first ask you to write as an input the path to the configuration file, wich contains all the map informations.
+map_file_path corresponds to the path of the file containing the map configuration.
 
 To run unit tests, use :
 
