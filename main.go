@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	warehouseGraph, nbTurn, err := AnalyzeAllText()
+	warehouseGraph, nbTurn, err := analyzeAllText()
 	if err != nil {
 		return
 	}
