@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 const (
-	TRUCK       = 0
-	BOX         = 1
-	TRANSPORTER = 2
+	TRUCK       = 0 // A truck object
+	BOX         = 1 // A box object
+	TRANSPORTER = 2 // A transporter object
 )
 
 func unloadTransporter(graph *WarehouseSquareGraph, transporter_coord Point) {
