@@ -2,16 +2,18 @@ package main
 
 import "fmt"
 
-const (
-	TRUCK = 0
-	BOX   = 1
-)
-
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
 	if isWarehouseEmpty(graph) {
-		// TODO: Move if on truck
-		fmt.Print(" WAIT\n")
+		if graph.doesNodeHasObject(start_node.point, TRUCK) {
+			neighbor, err := getEmptyNeighbor(graph, start_node)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			moveTransporterToNextPosition(graph, start_node.point, neighbor.point)
+		} else {
+			fmt.Print(" WAIT\n")
+		}
 		return
 	}
 	closest_box := findClosestObject(graph, start_node, BOX)
@@ -38,27 +40,15 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		}
 		graph.nodes[box_x+(box_y*graph.height)].box = nil
 	} else {
-		new_x := shortestPath[1].point.x
-		new_y := shortestPath[1].point.y
-		old_x := start_node.point.x
-		old_y := start_node.point.y
-		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
-		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
-		fmt.Printf(" GO [%d,%d]\n", new_x, new_y)
+		moveTransporterToNextPosition(graph, start_node.point, shortestPath[1].point)
 	}
 }
 
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
-	closest_box := findClosestObject(graph, start_node, TRUCK)
-	if closest_box.truck == nil {
-		fmt.Print(" WAIT\n")
-		return
-	}
-	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
-	if len(shortestPath) == 1 {
-		x := shortestPath[0].point.x
-		y := shortestPath[0].point.y
+	if graph.doesNodeHasObject(start_node.point, TRUCK) {
+		x := start_node.point.x
+		y := start_node.point.y
 		if graph.nodes[x+(y*graph.height)].truck.is_gone {
 			return
 		}
@@ -74,17 +64,14 @@ func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node N
 		}
 		graph.nodes[x+(y*graph.height)].transporter.weight = 0
 		graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
-		if isWarehouseEmpty(graph) {
-			graph.nodes[x+(y*graph.height)].truck.is_gone = true
-		}
 	} else {
-		new_x := shortestPath[1].point.x
-		new_y := shortestPath[1].point.y
-		old_x := start_node.point.x
-		old_y := start_node.point.y
-		graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
-		graph.nodes[old_x+(old_y*graph.height)].transporter = nil
-		fmt.Printf(" GO [%d,%d]\n", new_x, new_y)
+		closest_box := findClosestObject(graph, start_node, TRUCK)
+		if closest_box.truck == nil {
+			fmt.Print(" WAIT\n")
+			return
+		}
+		shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
+		moveTransporterToNextPosition(graph, start_node.point, shortestPath[1].point)
 	}
 }
 

@@ -16,7 +16,7 @@ func play(turns int, warehouse *WarehouseSquareGraph) {
 				moveTransporterTowardNearestBox(warehouse, node)
 			}
 		}
-		if isGameFinished(warehouse) {
+		if isGameFinished(warehouse) && isTruckGone(warehouse) {
 			return // TODO finish
 		}
 		warehouse.Print()
