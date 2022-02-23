@@ -11,13 +11,17 @@ func (graph *WarehouseSquareGraph) Print() {
 		node := graph.nodes[i]
 		if node.box != nil {
 			fmt.Print("[x]")
-		} else if node.transporter != nil {
-			fmt.Print("[t]")
-		} else if node.truck != nil {
-			fmt.Print("[g]")
-		} else {
-			fmt.Print("[ ]")
+			continue
 		}
+		if node.transporter != nil {
+			fmt.Print("[t]")
+			continue
+		}
+		if node.truck != nil {
+			fmt.Print("[g]")
+			continue
+		}
+		fmt.Print("[ ]")
 	}
 	fmt.Print("\n")
 }
