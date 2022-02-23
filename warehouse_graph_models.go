@@ -17,19 +17,18 @@ type Box struct {
 }
 
 type Transporter struct {
-	name      string
-	is_loaded bool
-	weight    int
-	box_name  string
+	name     string
+	isLoaded bool
+	box      *Box
 }
 
 type Truck struct {
-	name          string
-	max_load      int
-	current_load  int
-	waiting_time  int
-	current_timer int
-	is_gone       bool
+	name         string
+	maxLoad      int
+	currentLoad  int
+	maxTimer     int
+	currentTimer int
+	isGone       bool
 }
 
 type Node struct {

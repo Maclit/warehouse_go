@@ -17,7 +17,7 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		fmt.Printf("tour %d\n", i+1)
 		transporterNodeList := getWharehouseNodeListWithObject(graph, TRANSPORTER)
 		for _, transporterNode := range transporterNodeList {
-			if transporterNode.transporter.is_loaded {
+			if transporterNode.transporter.isLoaded {
 				moveTransporterTowardNearestTruck(graph, transporterNode)
 			} else {
 				moveTransporterTowardNearestBox(graph, transporterNode)

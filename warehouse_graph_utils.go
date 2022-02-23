@@ -16,20 +16,20 @@ const (
 func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	x := transporterPoint.x
 	y := transporterPoint.y
-	if graph.nodes[x+(y*graph.height)].truck.is_gone {
+	if graph.nodes[x+(y*graph.height)].truck.isGone {
 		fmt.Print(" WAIT\n")
 		return
 	}
-	newWeight := graph.nodes[x+(y*graph.height)].truck.current_load + graph.nodes[x+(y*graph.height)].transporter.weight
-	if newWeight > graph.nodes[x+(y*graph.height)].truck.max_load {
+	newWeight := graph.nodes[x+(y*graph.height)].truck.currentLoad + graph.nodes[x+(y*graph.height)].transporter.box.color
+	if newWeight > graph.nodes[x+(y*graph.height)].truck.maxLoad {
 		fmt.Print(" WAIT\n")
-		graph.nodes[x+(y*graph.height)].truck.is_gone = true
-		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
+		graph.nodes[x+(y*graph.height)].truck.isGone = true
+		graph.nodes[x+(y*graph.height)].truck.currentTimer = graph.nodes[x+(y*graph.height)].truck.maxTimer
 		return
 	}
-	graph.nodes[x+(y*graph.height)].truck.current_load = newWeight
-	fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box_name)
-	switch graph.nodes[x+(y*graph.height)].transporter.weight {
+	graph.nodes[x+(y*graph.height)].truck.currentLoad = newWeight
+	fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box.name)
+	switch graph.nodes[x+(y*graph.height)].transporter.box.color {
 	case YELLOW:
 		fmt.Print("YELLOW\n")
 	case GREEN:
@@ -37,8 +37,8 @@ func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	case BLUE:
 		fmt.Print("BLUE\n")
 	}
-	graph.nodes[x+(y*graph.height)].transporter.weight = 0
-	graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
+	graph.nodes[x+(y*graph.height)].transporter.box = nil
+	graph.nodes[x+(y*graph.height)].transporter.isLoaded = false
 
 }
 
@@ -155,7 +155,7 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 		if node.box != nil {
 			return false
 		}
-		if node.transporter != nil && node.transporter.is_loaded {
+		if node.transporter != nil && node.transporter.isLoaded {
 			return false
 		}
 	}
@@ -165,7 +165,7 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 func isTruckGone(graph *WarehouseSquareGraph) bool {
 	for i := 0; i < graph.width*graph.height; i++ {
 		node := graph.nodes[i]
-		if node.truck != nil && !node.truck.is_gone {
+		if node.truck != nil && !node.truck.isGone {
 			return false
 		}
 	}

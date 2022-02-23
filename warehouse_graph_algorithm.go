@@ -26,9 +26,8 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node
 		boxY := shortestPath[1].point.y
 		transporterX := startNode.point.x
 		transporterY := startNode.point.y
-		graph.nodes[transporterX+(transporterY*graph.height)].transporter.is_loaded = true
-		graph.nodes[transporterX+(transporterY*graph.height)].transporter.weight = graph.nodes[boxX+(boxY*graph.height)].box.color
-		graph.nodes[transporterX+(transporterY*graph.height)].transporter.box_name = graph.nodes[boxX+(boxY*graph.height)].box.name
+		graph.nodes[transporterX+(transporterY*graph.height)].transporter.isLoaded = true
+		graph.nodes[transporterX+(transporterY*graph.height)].transporter.box = graph.nodes[boxX+(boxY*graph.height)].box
 		fmt.Printf(" TAKE %s ", graph.nodes[boxX+(boxY*graph.height)].box.name)
 		switch graph.nodes[boxX+(boxY*graph.height)].box.color {
 		case YELLOW:
@@ -116,23 +115,23 @@ func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
 	fmt.Print(truckNode.truck.name)
 	x := truckNode.point.x
 	y := truckNode.point.y
-	if graph.nodes[x+(y*graph.height)].truck.current_timer == graph.nodes[x+(y*graph.height)].truck.waiting_time {
-		graph.nodes[x+(y*graph.height)].truck.is_gone = true
+	if graph.nodes[x+(y*graph.height)].truck.currentTimer == graph.nodes[x+(y*graph.height)].truck.maxTimer {
+		graph.nodes[x+(y*graph.height)].truck.isGone = true
 	}
-	if graph.nodes[x+(y*graph.height)].truck.is_gone {
-		graph.nodes[x+(y*graph.height)].truck.current_timer -= 1
-		fmt.Printf(" GONE %d/%d\n", graph.nodes[x+(y*graph.height)].truck.current_load, graph.nodes[x+(y*graph.height)].truck.max_load)
-		if graph.nodes[x+(y*graph.height)].truck.current_timer == 0 {
-			graph.nodes[x+(y*graph.height)].truck.is_gone = false
-			graph.nodes[x+(y*graph.height)].truck.current_load = 0
+	if graph.nodes[x+(y*graph.height)].truck.isGone {
+		graph.nodes[x+(y*graph.height)].truck.currentTimer -= 1
+		fmt.Printf(" GONE %d/%d\n", graph.nodes[x+(y*graph.height)].truck.currentLoad, graph.nodes[x+(y*graph.height)].truck.maxLoad)
+		if graph.nodes[x+(y*graph.height)].truck.currentTimer == 0 {
+			graph.nodes[x+(y*graph.height)].truck.isGone = false
+			graph.nodes[x+(y*graph.height)].truck.currentLoad = 0
 		}
 		return
 	}
 	if isGameFinished(graph) {
-		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
+		graph.nodes[x+(y*graph.height)].truck.currentTimer = graph.nodes[x+(y*graph.height)].truck.maxTimer
 	}
-	fmt.Printf(" WAITING %d/%d\n", graph.nodes[x+(y*graph.height)].truck.current_load, graph.nodes[x+(y*graph.height)].truck.max_load)
-	if graph.nodes[x+(y*graph.height)].truck.current_load == graph.nodes[x+(y*graph.height)].truck.max_load {
-		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
+	fmt.Printf(" WAITING %d/%d\n", graph.nodes[x+(y*graph.height)].truck.currentLoad, graph.nodes[x+(y*graph.height)].truck.maxLoad)
+	if graph.nodes[x+(y*graph.height)].truck.currentLoad == graph.nodes[x+(y*graph.height)].truck.maxLoad {
+		graph.nodes[x+(y*graph.height)].truck.currentTimer = graph.nodes[x+(y*graph.height)].truck.maxTimer
 	}
 }

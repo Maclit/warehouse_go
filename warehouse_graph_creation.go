@@ -25,22 +25,21 @@ func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
 
 func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, max_load, waiting_time int) {
 	truck := Truck{
-		name:          name,
-		max_load:      max_load,
-		current_load:  0,
-		waiting_time:  waiting_time,
-		current_timer: 0,
-		is_gone:       false,
+		name:         name,
+		maxLoad:      max_load,
+		currentLoad:  0,
+		maxTimer:     waiting_time,
+		currentTimer: 0,
+		isGone:       false,
 	}
 	graph.nodes[x+(y*graph.height)].truck = &truck
 }
 
 func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
 	transporter := Transporter{
-		name:      name,
-		is_loaded: false,
-		weight:    0,
-		box_name:  "",
+		name:     name,
+		isLoaded: false,
+		box:      nil,
 	}
 	graph.nodes[x+(y*graph.height)].transporter = &transporter
 }
