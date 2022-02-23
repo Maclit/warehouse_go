@@ -22,11 +22,11 @@ import (
 func readMap() (lines []string, err error){
 	// lines := []string{}
 	var line string
-	mapfile := os.Args[1]
 	if len(os.Args) <= 1 {
 		argsNull := []string{}
 		return argsNull, ArgumentsError(os.Args[0])
 	}
+	mapfile := os.Args[1]
 	f, err := os.Open(mapfile)
 	if err != nil {
 		log.Fatal(err)
