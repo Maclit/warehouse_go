@@ -98,7 +98,7 @@ func analyzeAllText() (warehouseGraph *WarehouseSquareGraph, round int, err erro
 
 	if errRecupMap != nil {
 		warehouseGraphErr := createWarehouseGraph(0, 0)
-		return warehouseGraphErr, 0, err
+		return warehouseGraphErr, 0, errRecupMap
 	}
 	firstLine, err := divide(text[0])
 	if err != nil {

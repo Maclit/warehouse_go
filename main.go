@@ -41,6 +41,7 @@ func play(turns int, graph *WarehouseSquareGraph) {
 func main() {
 	warehouseGraph, nbTurn, err := analyzeAllText()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	play(nbTurn, warehouseGraph)

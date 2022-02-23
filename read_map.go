@@ -19,7 +19,7 @@ import (
 // 	return input
 // }
 
-func readMap() (lines []string, err error){
+func readMap() (lines []string, err error) {
 	// lines := []string{}
 	var line string
 	if len(os.Args) <= 1 {
