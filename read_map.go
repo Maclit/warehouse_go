@@ -2,28 +2,31 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
-	"strings"
+	// "strings"
 )
 
-func getMap() string {
-	fmt.Print("Enter map file path: ")
-	reader := bufio.NewReader(os.Stdin)
-	input, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatal(err)
-	}
-	input = strings.ReplaceAll(input, "\n", "")
-	input = strings.ReplaceAll(input, "\r", "")
-	return input
-}
+// func getMap() string {
+// 	fmt.Print("Enter map file path: ")
+// 	reader := bufio.NewReader(os.Stdin)
+// 	input, err := reader.ReadString('\n')
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	input = strings.ReplaceAll(input, "\n", "")
+// 	input = strings.ReplaceAll(input, "\r", "")
+// 	return input
+// }
 
-func readMap() []string {
-	lines := []string{}
+func readMap() (lines []string, err error){
+	// lines := []string{}
 	var line string
-	mapfile := getMap()
+	mapfile := os.Args[1]
+	if len(os.Args) <= 1 {
+		argsNull := []string{}
+		return argsNull, ArgumentsError(os.Args[0])
+	}
 	f, err := os.Open(mapfile)
 	if err != nil {
 		log.Fatal(err)
@@ -37,5 +40,5 @@ func readMap() []string {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	return lines
+	return lines, nil
 }
