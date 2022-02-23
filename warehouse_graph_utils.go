@@ -8,6 +8,35 @@ const (
 	TRANSPORTER = 2
 )
 
+func unloadTransporter(graph *WarehouseSquareGraph, transporter_coord Point) {
+	x := transporter_coord.x
+	y := transporter_coord.y
+	if graph.nodes[x+(y*graph.height)].truck.is_gone {
+		fmt.Print(" WAIT\n")
+		return
+	}
+	new_weight := graph.nodes[x+(y*graph.height)].truck.current_load + graph.nodes[x+(y*graph.height)].transporter.weight
+	if new_weight > graph.nodes[x+(y*graph.height)].truck.max_load {
+		fmt.Print(" WAIT\n")
+		graph.nodes[x+(y*graph.height)].truck.is_gone = true
+		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
+		return
+	}
+	graph.nodes[x+(y*graph.height)].truck.current_load = new_weight
+	fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box_name)
+	switch graph.nodes[x+(y*graph.height)].transporter.weight {
+	case YELLOW:
+		fmt.Print("YELLOW\n")
+	case GREEN:
+		fmt.Print("GREEN\n")
+	case BLUE:
+		fmt.Print("BLUE\n")
+	}
+	graph.nodes[x+(y*graph.height)].transporter.weight = 0
+	graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
+
+}
+
 func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bool {
 	x := coord.x
 	y := coord.y

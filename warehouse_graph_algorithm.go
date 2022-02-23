@@ -47,23 +47,7 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
 	fmt.Print(start_node.transporter.name)
 	if graph.doesNodeHasObject(start_node.point, TRUCK) {
-		x := start_node.point.x
-		y := start_node.point.y
-		if graph.nodes[x+(y*graph.height)].truck.is_gone {
-			return
-		}
-		graph.nodes[x+(y*graph.height)].truck.current_load += graph.nodes[x+(y*graph.height)].transporter.weight
-		fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box_name)
-		switch graph.nodes[x+(y*graph.height)].transporter.weight {
-		case YELLOW:
-			fmt.Print("YELLOW\n")
-		case GREEN:
-			fmt.Print("GREEN\n")
-		case BLUE:
-			fmt.Print("BLUE\n")
-		}
-		graph.nodes[x+(y*graph.height)].transporter.weight = 0
-		graph.nodes[x+(y*graph.height)].transporter.is_loaded = false
+		unloadTransporter(graph, start_node.point)
 	} else {
 		closest_box := findClosestObject(graph, start_node, TRUCK)
 		if closest_box.truck == nil {
@@ -125,5 +109,31 @@ func findClosestObject(graph *WarehouseSquareGraph, start_node Node, to_find int
 				}
 			}
 		}
+	}
+}
+
+func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
+	fmt.Print(truckNode.truck.name)
+	x := truckNode.point.x
+	y := truckNode.point.y
+	if graph.nodes[x+(y*graph.height)].truck.current_timer == graph.nodes[x+(y*graph.height)].truck.waiting_time {
+		graph.nodes[x+(y*graph.height)].truck.is_gone = true
+	}
+	if graph.nodes[x+(y*graph.height)].truck.is_gone {
+		graph.nodes[x+(y*graph.height)].truck.current_timer -= 1
+		fmt.Printf(" GONE %d/%d\n", graph.nodes[x+(y*graph.height)].truck.current_load, graph.nodes[x+(y*graph.height)].truck.max_load)
+		if graph.nodes[x+(y*graph.height)].truck.current_timer == 0 {
+			graph.nodes[x+(y*graph.height)].truck.is_gone = false
+			graph.nodes[x+(y*graph.height)].truck.current_load = 0
+		}
+		return
+	}
+	if isGameFinished(graph) {
+		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
+	}
+	fmt.Printf(" WAITING %d/%d\n", graph.nodes[x+(y*graph.height)].truck.current_load, graph.nodes[x+(y*graph.height)].truck.max_load)
+	if graph.nodes[x+(y*graph.height)].truck.current_load == graph.nodes[x+(y*graph.height)].truck.max_load {
+		graph.nodes[x+(y*graph.height)].truck.is_gone = true
+		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
 	}
 }
