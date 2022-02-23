@@ -26,7 +26,10 @@ The main part of the program is contained in the warehouse_graph_*.go files, it 
 ## STRATEGY
 
 To complete this project, our team choosed to use a fairly simple strategy :
+
  1 . Transporters wich are empty will move toward the nearest box to pick it up.
+
  2 . Transporters carrying a box will go the the nearest truck to drop it off.
+
  3 . If the truck is too full to accept another box, it will depart the required amount of turns.
 
