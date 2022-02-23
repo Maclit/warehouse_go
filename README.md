@@ -18,6 +18,12 @@ go run .
 
 The program will first ask you to write as an input the path to the configuration file, wich contains all the map informations.
 
+To run unit tests, use :
+
+```
+go test
+```
+
 ## PROJECT ORGANISATION
 
 The project in composed of only 1 package : main. All its files can be found in the root directory.
