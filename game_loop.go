@@ -6,7 +6,7 @@ import (
 )
 
 func play(turns int, graph *WarehouseSquareGraph) {
-	if isWarehouseEmpty(graph) {
+	if graph.isEmpty() {
 		emoji, err := strconv.Unquote(`"🚒"`)
 		if err == nil {
 			fmt.Println("\n", emoji)
@@ -27,7 +27,7 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		for _, truckNode := range truckNodeList {
 			updateTruckStatus(graph, truckNode)
 		}
-		if isGameFinished(graph) && isTruckGone(graph) {
+		if isGameFinished(graph) && graph.areAllTrucksGone() {
 			emoji, err := strconv.Unquote(`"🚒"`)
 			if err == nil {
 				fmt.Println("\n", emoji)

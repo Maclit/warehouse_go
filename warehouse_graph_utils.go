@@ -30,21 +30,6 @@ func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	graph.nodes[x+(y*graph.height)].transporter.isLoaded = false
 }
 
-func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bool {
-	x := coord.x
-	y := coord.y
-	if object == TRUCK && graph.nodes[x+(y*graph.height)].truck != nil {
-		return true
-	}
-	if object == BOX && graph.nodes[x+(y*graph.height)].box != nil {
-		return true
-	}
-	if object == TRANSPORTER && graph.nodes[x+(y*graph.height)].transporter != nil {
-		return true
-	}
-	return false
-}
-
 func moveTransporterToNextPosition(graph *WarehouseSquareGraph, start, end Point) {
 	newX := end.x
 	newY := end.y
@@ -64,16 +49,6 @@ func isNodeInArray(array []Node, node Node) bool {
 	return false
 }
 
-func isWarehouseEmpty(graph *WarehouseSquareGraph) bool {
-	for i := 0; i < graph.width*graph.height; i++ {
-		node := graph.nodes[i]
-		if node.box != nil {
-			return false
-		}
-	}
-	return true
-}
-
 func isGameFinished(graph *WarehouseSquareGraph) bool {
 	for i := 0; i < graph.width*graph.height; i++ {
 		node := graph.nodes[i]
@@ -87,12 +62,39 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 	return true
 }
 
-func isTruckGone(graph *WarehouseSquareGraph) bool {
+func (graph *WarehouseSquareGraph) isEmpty() bool {
 	for i := 0; i < graph.width*graph.height; i++ {
 		node := graph.nodes[i]
-		if node.truck != nil && !node.truck.isGone {
+		if node.box != nil {
 			return false
 		}
 	}
 	return true
+}
+
+func (graph *WarehouseSquareGraph) areAllTrucksGone() bool {
+	status := true
+
+	for i := 0; i < graph.width*graph.height; i++ {
+		node := graph.nodes[i]
+		if node.truck != nil && !node.truck.isGone {
+			status = false
+		}
+	}
+	return status
+}
+
+func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bool {
+	x := coord.x
+	y := coord.y
+	if object == TRUCK && graph.nodes[x+(y*graph.height)].truck != nil {
+		return true
+	}
+	if object == BOX && graph.nodes[x+(y*graph.height)].box != nil {
+		return true
+	}
+	if object == TRANSPORTER && graph.nodes[x+(y*graph.height)].transporter != nil {
+		return true
+	}
+	return false
 }

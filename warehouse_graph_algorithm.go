@@ -4,7 +4,7 @@ import "fmt"
 
 func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node) {
 	fmt.Print(startNode.transporter.name)
-	if isWarehouseEmpty(graph) {
+	if graph.isEmpty() {
 		if graph.doesNodeHasObject(startNode.point, TRUCK) {
 			neighbor, err := getEmptyNeighbor(graph, startNode)
 			if err != nil {
