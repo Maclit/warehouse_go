@@ -119,7 +119,7 @@ func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
 		graph.nodes[x+(y*graph.height)].truck.isGone = true
 	}
 	if graph.nodes[x+(y*graph.height)].truck.isGone {
-		graph.nodes[x+(y*graph.height)].truck.currentTimer -= 1
+		graph.nodes[x+(y*graph.height)].truck.currentTimer--
 		fmt.Printf(" GONE %d/%d\n", graph.nodes[x+(y*graph.height)].truck.currentLoad, graph.nodes[x+(y*graph.height)].truck.maxLoad)
 		if graph.nodes[x+(y*graph.height)].truck.currentTimer == 0 {
 			graph.nodes[x+(y*graph.height)].truck.isGone = false

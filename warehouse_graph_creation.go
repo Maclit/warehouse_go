@@ -1,10 +1,10 @@
 package main
 
 func createWarehouseGraph(height, width int) *WarehouseSquareGraph {
-	warehouse_graph := WarehouseSquareGraph{width: width, height: height}
+	warehouseGraph := WarehouseSquareGraph{width: width, height: height}
 
-	warehouse_graph.initializeNodes()
-	return &warehouse_graph
+	warehouseGraph.initializeNodes()
+	return &warehouseGraph
 }
 
 func (graph *WarehouseSquareGraph) initializeNodes() {
@@ -15,6 +15,7 @@ func (graph *WarehouseSquareGraph) initializeNodes() {
 	}
 }
 
+// AddPackage Add a package object to the graph
 func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
 	box := Box{
 		name:  name,
@@ -23,6 +24,7 @@ func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
 	graph.nodes[x+(y*graph.height)].box = &box
 }
 
+// AddTruck Add a truck object to the graph
 func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, max_load, waiting_time int) {
 	truck := Truck{
 		name:         name,
@@ -35,6 +37,7 @@ func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, max_load, waiting
 	graph.nodes[x+(y*graph.height)].truck = &truck
 }
 
+// AddTransporter Add a transporter object to the graph
 func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
 	transporter := Transporter{
 		name:     name,

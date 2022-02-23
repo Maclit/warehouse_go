@@ -2,17 +2,6 @@ package main
 
 import "fmt"
 
-const (
-	// TRUCK : A truck object
-	TRUCK = 0
-
-	// BOX : A box object
-	BOX = 1
-
-	// TRANSPORTER : A transporter object
-	TRANSPORTER = 2
-)
-
 func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	x := transporterPoint.x
 	y := transporterPoint.y
