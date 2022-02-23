@@ -87,7 +87,7 @@ func getEmptyNeighbor(graph *WarehouseSquareGraph, node Node) (Node, error) {
 		y = node.point.y - 1
 		return graph.nodes[x+(y*graph.height)], nil
 	}
-	return Node{}, ErrStuck(node.transporter.name)
+	return Node{}, StuckTransporterError(node.transporter.name)
 }
 
 func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {

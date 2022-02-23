@@ -10,7 +10,7 @@ func infoMap(text []string) (infoMap []int, err error) {
 		intVar, err := strconv.Atoi(text[n])
 		if err != nil || intVar < 0 {
 			MapNull := []int{}
-			return MapNull, ErrMap(text[n])
+			return MapNull, MapError(text[n])
 		}
 		infoMap = append(infoMap, intVar)
 	}
@@ -25,7 +25,7 @@ func infoColis(text []string) (infoNameColis string, infoColis []int, err error)
 		if err != nil || intVar < 0 {
 			ColisPosNull := []int{}
 			ColisNull := ""
-			return ColisNull, ColisPosNull, ErrMap(text[n])
+			return ColisNull, ColisPosNull, MapError(text[n])
 		}
 		infoColis = append(infoColis, intVar)
 	}
@@ -39,7 +39,7 @@ func infoColis(text []string) (infoNameColis string, infoColis []int, err error)
 	default:
 		ColisPosNull := []int{}
 		ColisNull := ""
-		return ColisNull, ColisPosNull, ErrColor(lower)
+		return ColisNull, ColisPosNull, ColorError(lower)
 	}
 	return infoNameColis, infoColis, nil
 }
@@ -52,7 +52,7 @@ func infoPaletteCamion(text []string) (infoColis string, infoPosColis []int, err
 		if err != nil || intVar < 0 {
 			ColisPosNull := []int{}
 			ColisNull := ""
-			return ColisNull, ColisPosNull, ErrMap(text[n])
+			return ColisNull, ColisPosNull, MapError(text[n])
 		}
 		infoPosColis = append(infoPosColis, intVar)
 	}
@@ -87,7 +87,8 @@ func divide(text string) ([]string, error) {
 	words := strings.Fields(text)
 	if len(words) < 3 || len(words) > 5 {
 		response := []string{}
-		return response, ErrInput(words)
+		length := strconv.Itoa(len(words))
+		return response, InputError(length)
 	}
 	return words, nil
 }
