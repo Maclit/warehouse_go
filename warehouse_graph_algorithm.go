@@ -79,36 +79,23 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 }
 
 func findClosestObject(graph *WarehouseSquareGraph, startNode Node, toFind int) Node {
-	if toFind == TRUCK && startNode.truck != nil {
-		return startNode
-	}
-	if toFind == BOX && startNode.box != nil {
-		return startNode
-	}
 	toVisit := getAllNeighborsNode(graph, startNode)
 	visited := []Node{}
-	for {
-		if len(toVisit) == 0 {
-			return Node{}
-		}
+	for len(toVisit) > 0 {
 		nextNode := toVisit[0]
 		toVisit = toVisit[1:]
 		visited = append(visited, nextNode)
-		if toFind == TRUCK && nextNode.truck != nil {
-			return nextNode
-		}
-		if toFind == BOX && nextNode.box != nil {
+		if (toFind == TRUCK && nextNode.truck != nil) || (toFind == BOX && nextNode.box != nil) {
 			return nextNode
 		}
 		neightborsList := getAllNeighborsNode(graph, nextNode)
-		if len(neightborsList) > 0 {
-			for _, node := range neightborsList {
-				if !isNodeInArray(visited, node) {
-					toVisit = append(toVisit, node)
-				}
+		for _, node := range neightborsList {
+			if !isNodeInArray(visited, node) {
+				toVisit = append(toVisit, node)
 			}
 		}
 	}
+	return Node{}
 }
 
 func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
