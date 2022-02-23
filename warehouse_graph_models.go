@@ -11,13 +11,13 @@ const (
 	TRANSPORTER = 2
 
 	// GREEN A green box has a weight of 200
-	GREEN int = 200
+	GREEN = 200
 
 	// YELLOW A yellow box has a weight of 100
-	YELLOW int = 100
+	YELLOW = 100
 
 	// BLUE A blue box has a weight of 500
-	BLUE int = 500
+	BLUE = 500
 )
 
 // Point A point object, containing 2d coordinates (x, y)
