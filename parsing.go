@@ -94,8 +94,12 @@ func divide(text string) ([]string, error) {
 }
 
 func analyzeAllText() (warehouseGraph *WarehouseSquareGraph, round int, err error) {
-	text := readMap()
+	text, errRecupMap := readMap()
 
+	if errRecupMap != nil {
+		warehouseGraphErr := createWarehouseGraph(0, 0)
+		return warehouseGraphErr, 0, err
+	}
 	firstLine, err := divide(text[0])
 	if err != nil {
 		warehouseGraphErr := createWarehouseGraph(0, 0)
