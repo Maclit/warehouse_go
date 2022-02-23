@@ -2,6 +2,12 @@ package main
 
 import "fmt"
 
+type ArgumentsError string
+
+func (e ArgumentsError) Error() string{
+	return fmt.Sprintf("Missing map argument: %s", string(e))
+}
+
 // InputError correspond to an error of Input
 type InputError string
 
