@@ -2,35 +2,35 @@ package main
 
 import "fmt"
 
-func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Node) {
-	fmt.Print(start_node.transporter.name)
+func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node) {
+	fmt.Print(startNode.transporter.name)
 	if isWarehouseEmpty(graph) {
-		if graph.doesNodeHasObject(start_node.point, TRUCK) {
-			neighbor, err := getEmptyNeighbor(graph, start_node)
+		if graph.doesNodeHasObject(startNode.point, TRUCK) {
+			neighbor, err := getEmptyNeighbor(graph, startNode)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
-			moveTransporterToNextPosition(graph, start_node.point, neighbor.point)
+			moveTransporterToNextPosition(graph, startNode.point, neighbor.point)
 		} else {
 			fmt.Print(" WAIT\n")
 		}
 		return
 	}
-	closest_box := findClosestObject(graph, start_node, BOX)
+	closest_box := findClosestObject(graph, startNode, BOX)
 	if closest_box.box == nil {
 		return
 	}
-	shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
+	shortestPath := shortestPath(graph, startNode, closest_box, make([]Node, 0))
 	if len(shortestPath) == 2 {
-		box_x := shortestPath[1].point.x
-		box_y := shortestPath[1].point.y
-		transporter_x := start_node.point.x
-		transporter_y := start_node.point.y
+		boxX := shortestPath[1].point.x
+		boxY := shortestPath[1].point.y
+		transporter_x := startNode.point.x
+		transporter_y := startNode.point.y
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.is_loaded = true
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.weight = graph.nodes[box_x+(box_y*graph.height)].box.color
 		graph.nodes[transporter_x+(transporter_y*graph.height)].transporter.box_name = graph.nodes[box_x+(box_y*graph.height)].box.name
-		fmt.Printf(" TAKE %s ", graph.nodes[box_x+(box_y*graph.height)].box.name)
-		switch graph.nodes[box_x+(box_y*graph.height)].box.color {
+		fmt.Printf(" TAKE %s ", graph.nodes[boxX+(boxY*graph.height)].box.name)
+		switch graph.nodes[boxX+(boxY*graph.height)].box.color {
 		case YELLOW:
 			fmt.Print("YELLOW\n")
 		case GREEN:
@@ -38,24 +38,24 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, start_node Nod
 		case BLUE:
 			fmt.Print("BLUE\n")
 		}
-		graph.nodes[box_x+(box_y*graph.height)].box = nil
+		graph.nodes[boxX+(boxY*graph.height)].box = nil
 	} else {
-		moveTransporterToNextPosition(graph, start_node.point, shortestPath[1].point)
+		moveTransporterToNextPosition(graph, startNode.point, shortestPath[1].point)
 	}
 }
 
-func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, start_node Node) {
-	fmt.Print(start_node.transporter.name)
-	if graph.doesNodeHasObject(start_node.point, TRUCK) {
-		unloadTransporter(graph, start_node.point)
+func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, startNode Node) {
+	fmt.Print(startNode.transporter.name)
+	if graph.doesNodeHasObject(startNode.point, TRUCK) {
+		unloadTransporter(graph, startNode.point)
 	} else {
-		closest_box := findClosestObject(graph, start_node, TRUCK)
-		if closest_box.truck == nil {
+		closestBox := findClosestObject(graph, startNode, TRUCK)
+		if closestBox.truck == nil {
 			fmt.Print(" WAIT\n")
 			return
 		}
-		shortestPath := shortestPath(graph, start_node, closest_box, make([]Node, 0))
-		moveTransporterToNextPosition(graph, start_node.point, shortestPath[1].point)
+		shortestPath := shortestPath(graph, startNode, closestBox, make([]Node, 0))
+		moveTransporterToNextPosition(graph, startNode.point, shortestPath[1].point)
 	}
 }
 
@@ -79,33 +79,33 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 	return shortest
 }
 
-func findClosestObject(graph *WarehouseSquareGraph, start_node Node, to_find int) Node {
-	if to_find == TRUCK && start_node.truck != nil {
-		return start_node
+func findClosestObject(graph *WarehouseSquareGraph, startNode Node, toFind int) Node {
+	if toFind == TRUCK && startNode.truck != nil {
+		return startNode
 	}
-	if to_find == BOX && start_node.box != nil {
-		return start_node
+	if toFind == BOX && startNode.box != nil {
+		return startNode
 	}
-	to_visit := getAllNeighborsNode(graph, start_node)
+	toVisit := getAllNeighborsNode(graph, startNode)
 	visited := []Node{}
 	for {
-		if len(to_visit) == 0 {
+		if len(toVisit) == 0 {
 			return Node{}
 		}
-		next_node := to_visit[0]
-		to_visit = to_visit[1:]
-		visited = append(visited, next_node)
-		if to_find == TRUCK && next_node.truck != nil {
-			return next_node
+		nextNode := toVisit[0]
+		toVisit = toVisit[1:]
+		visited = append(visited, nextNode)
+		if toFind == TRUCK && nextNode.truck != nil {
+			return nextNode
 		}
-		if to_find == BOX && next_node.box != nil {
-			return next_node
+		if toFind == BOX && nextNode.box != nil {
+			return nextNode
 		}
-		neightbors_list := getAllNeighborsNode(graph, next_node)
-		if len(neightbors_list) > 0 {
-			for _, node := range neightbors_list {
+		neightborsList := getAllNeighborsNode(graph, nextNode)
+		if len(neightborsList) > 0 {
+			for _, node := range neightborsList {
 				if !isNodeInArray(visited, node) {
-					to_visit = append(to_visit, node)
+					toVisit = append(toVisit, node)
 				}
 			}
 		}

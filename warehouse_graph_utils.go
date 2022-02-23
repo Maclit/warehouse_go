@@ -8,21 +8,21 @@ const (
 	TRANSPORTER = 2 // A transporter object
 )
 
-func unloadTransporter(graph *WarehouseSquareGraph, transporter_coord Point) {
-	x := transporter_coord.x
-	y := transporter_coord.y
+func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
+	x := transporterPoint.x
+	y := transporterPoint.y
 	if graph.nodes[x+(y*graph.height)].truck.is_gone {
 		fmt.Print(" WAIT\n")
 		return
 	}
-	new_weight := graph.nodes[x+(y*graph.height)].truck.current_load + graph.nodes[x+(y*graph.height)].transporter.weight
-	if new_weight > graph.nodes[x+(y*graph.height)].truck.max_load {
+	newWeight := graph.nodes[x+(y*graph.height)].truck.current_load + graph.nodes[x+(y*graph.height)].transporter.weight
+	if newWeight > graph.nodes[x+(y*graph.height)].truck.max_load {
 		fmt.Print(" WAIT\n")
 		graph.nodes[x+(y*graph.height)].truck.is_gone = true
 		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
 		return
 	}
-	graph.nodes[x+(y*graph.height)].truck.current_load = new_weight
+	graph.nodes[x+(y*graph.height)].truck.current_load = newWeight
 	fmt.Printf(" LEAVE %s ", graph.nodes[x+(y*graph.height)].transporter.box_name)
 	switch graph.nodes[x+(y*graph.height)].transporter.weight {
 	case YELLOW:
@@ -53,13 +53,13 @@ func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bo
 }
 
 func moveTransporterToNextPosition(graph *WarehouseSquareGraph, start, end Point) {
-	new_x := end.x
-	new_y := end.y
-	old_x := start.x
-	old_y := start.y
-	graph.nodes[new_x+(new_y*graph.height)].transporter = graph.nodes[old_x+(old_y*graph.height)].transporter
-	graph.nodes[old_x+(old_y*graph.height)].transporter = nil
-	fmt.Printf(" GO [%d,%d]\n", new_x, new_y)
+	newX := end.x
+	newY := end.y
+	oldX := start.x
+	oldY := start.y
+	graph.nodes[newX+(newY*graph.height)].transporter = graph.nodes[oldX+(oldY*graph.height)].transporter
+	graph.nodes[oldX+(oldY*graph.height)].transporter = nil
+	fmt.Printf(" GO [%d,%d]\n", newX, newY)
 }
 
 func getEmptyNeighbor(graph *WarehouseSquareGraph, node Node) (Node, error) {
