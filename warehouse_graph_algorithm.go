@@ -133,7 +133,6 @@ func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
 	}
 	fmt.Printf(" WAITING %d/%d\n", graph.nodes[x+(y*graph.height)].truck.current_load, graph.nodes[x+(y*graph.height)].truck.max_load)
 	if graph.nodes[x+(y*graph.height)].truck.current_load == graph.nodes[x+(y*graph.height)].truck.max_load {
-		graph.nodes[x+(y*graph.height)].truck.is_gone = true
 		graph.nodes[x+(y*graph.height)].truck.current_timer = graph.nodes[x+(y*graph.height)].truck.waiting_time
 	}
 }
