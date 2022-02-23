@@ -29,3 +29,17 @@ type StuckTransporterError string
 func (e StuckTransporterError) Error() string {
 	return fmt.Sprintf("Transporter is stuck. name : %s ", string(e))
 }
+
+// NotEmpytNodeError Returned when an empty node is not found.
+type NotEmpytNodeError string
+
+func (e NotEmpytNodeError) Error() string {
+	return fmt.Sprintf("Node is not empty. name : %s ", string(e))
+}
+
+// NoNeighborNodeError Returned when no valid neigbor has been found for a node.
+type NoNeighborNodeError string
+
+func (e NoNeighborNodeError) Error() string {
+	return fmt.Sprintf("Node has no neighbor. direction : %s ", string(e))
+}

@@ -55,69 +55,6 @@ func moveTransporterToNextPosition(graph *WarehouseSquareGraph, start, end Point
 	fmt.Printf(" GO [%d,%d]\n", newX, newY)
 }
 
-func getEmptyNeighbor(graph *WarehouseSquareGraph, node Node) (Node, error) {
-	var x, y int
-
-	if node.point.x >= 0 && node.point.x < graph.width-1 {
-		x = node.point.x + 1
-		y = node.point.y
-		if graph.nodes[x+(y*graph.height)].transporter == nil {
-			return graph.nodes[x+(y*graph.height)], nil
-		}
-	}
-	if node.point.x > 0 && node.point.x <= graph.width-1 {
-		x = node.point.x - 1
-		y = node.point.y
-		return graph.nodes[x+(y*graph.height)], nil
-	}
-	if node.point.y >= 0 && node.point.y < graph.height-1 {
-		x = node.point.x
-		y = node.point.y + 1
-		return graph.nodes[x+(y*graph.height)], nil
-	}
-	if node.point.y > 0 && node.point.y <= graph.height-1 {
-		x = node.point.x
-		y = node.point.y - 1
-		return graph.nodes[x+(y*graph.height)], nil
-	}
-	return Node{}, StuckTransporterError(node.transporter.name)
-}
-
-func getAllNeighborsNode(graph *WarehouseSquareGraph, node Node) []Node {
-	var x, y int
-
-	neighbors := []Node{}
-	if node.point.x >= 0 && node.point.x < graph.width-1 {
-		x = node.point.x + 1
-		y = node.point.y
-		if graph.nodes[x+(y*graph.height)].transporter == nil {
-			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
-		}
-	}
-	if node.point.x > 0 && node.point.x <= graph.width-1 {
-		x = node.point.x - 1
-		y = node.point.y
-		if graph.nodes[x+(y*graph.height)].transporter == nil {
-			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
-		}
-	}
-	if node.point.y >= 0 && node.point.y < graph.height-1 {
-		x = node.point.x
-		y = node.point.y + 1
-		if graph.nodes[x+(y*graph.height)].transporter == nil {
-			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
-		}
-	}
-	if node.point.y > 0 && node.point.y <= graph.height-1 {
-		x = node.point.x
-		y = node.point.y - 1
-		if graph.nodes[x+(y*graph.height)].transporter == nil {
-			neighbors = append(neighbors, graph.nodes[x+(y*graph.height)])
-		}
-	}
-	return neighbors
-}
-
 func isNodeInArray(array []Node, node Node) bool {
 	for _, element := range array {
 		if element.point.x == node.point.x && element.point.y == node.point.y {
