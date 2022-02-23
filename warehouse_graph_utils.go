@@ -28,7 +28,6 @@ func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	}
 	graph.nodes[x+(y*graph.height)].transporter.box = nil
 	graph.nodes[x+(y*graph.height)].transporter.isLoaded = false
-
 }
 
 func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bool {

@@ -20,7 +20,7 @@ const (
 	BLUE int = 500
 )
 
-// Point A point object, containing 2d coordiantes (x, y)
+// Point A point object, containing 2d coordinates (x, y)
 type Point struct {
 	x int
 	y int

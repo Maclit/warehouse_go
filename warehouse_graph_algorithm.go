@@ -16,11 +16,11 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node
 		}
 		return
 	}
-	closest_box := findClosestObject(graph, startNode, BOX)
-	if closest_box.box == nil {
+	closestBox := findClosestObject(graph, startNode, BOX)
+	if closestBox.box == nil {
 		return
 	}
-	shortestPath := shortestPath(graph, startNode, closest_box, make([]Node, 0))
+	shortestPath := shortestPath(graph, startNode, closestBox, make([]Node, 0))
 	if len(shortestPath) == 2 {
 		boxX := shortestPath[1].point.x
 		boxY := shortestPath[1].point.y

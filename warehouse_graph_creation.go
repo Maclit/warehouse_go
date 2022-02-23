@@ -15,7 +15,7 @@ func (graph *WarehouseSquareGraph) initializeNodes() {
 	}
 }
 
-// AddPackage Add a package object to the graph
+// AddPackage A method to add a package object to the graph.
 func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
 	box := Box{
 		name:  name,
@@ -24,20 +24,20 @@ func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
 	graph.nodes[x+(y*graph.height)].box = &box
 }
 
-// AddTruck Add a truck object to the graph
-func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, max_load, waiting_time int) {
+// AddTruck A method to add a truck object to the graph.
+func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, maxLoad, maxTimer int) {
 	truck := Truck{
 		name:         name,
-		maxLoad:      max_load,
+		maxLoad:      maxLoad,
 		currentLoad:  0,
-		maxTimer:     waiting_time,
+		maxTimer:     maxTimer,
 		currentTimer: 0,
 		isGone:       false,
 	}
 	graph.nodes[x+(y*graph.height)].truck = &truck
 }
 
-// AddTransporter Add a transporter object to the graph
+// AddTransporter A method to add a transporter object to the graph.
 func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
 	transporter := Transporter{
 		name:     name,
