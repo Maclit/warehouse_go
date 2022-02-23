@@ -4,4 +4,6 @@ paquet 2 2 BLUE
 deadpool 0 3 yellow
 colère_DU_dragon 4 1 green
 transpalette_1 0 0
+transpalette_3 1 0
+transpalette_2 2 0
 camion_b 3 4 1000 3
