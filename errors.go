@@ -6,7 +6,7 @@ import "fmt"
 type InputError string
 
 func (e InputError) Error() string {
-	return fmt.Sprintf("Can not accept more than 5 parameters and less than 3. number of parameters: %d", string(e))
+	return fmt.Sprintf("Can not accept more than 5 parameters and less than 3. number of parameters: %s", string(e))
 }
 
 // MapError correspond to an error in the creation of the map
