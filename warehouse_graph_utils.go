@@ -62,6 +62,25 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 	return true
 }
 
+func getWharehouseNodeListWithObject(graph *WarehouseSquareGraph, object int) []Node {
+	objectList := []Node{}
+
+	for x := 0; x < graph.width; x++ {
+		for y := 0; y < graph.height; y++ {
+			if object == TRANSPORTER && graph.nodes[x+(y*graph.height)].transporter != nil {
+				objectList = append(objectList, graph.nodes[x+(y*graph.height)])
+			}
+			if object == TRUCK && graph.nodes[x+(y*graph.height)].truck != nil {
+				objectList = append(objectList, graph.nodes[x+(y*graph.height)])
+			}
+			if object == BOX && graph.nodes[x+(y*graph.height)].box != nil {
+				objectList = append(objectList, graph.nodes[x+(y*graph.height)])
+			}
+		}
+	}
+	return objectList
+}
+
 func (graph *WarehouseSquareGraph) isEmpty() bool {
 	for i := 0; i < graph.width*graph.height; i++ {
 		node := graph.nodes[i]
