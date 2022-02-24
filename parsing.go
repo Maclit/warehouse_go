@@ -64,23 +64,32 @@ func infoPaletteCamion(text []string) (infoColis string, infoPosColis []int, err
 func findObject(words []string, warehouse *WarehouseSquareGraph) error {
 	switch size := len(words); size {
 	case 4:
-		name, posColor, err := infoColis(words)
-		if err != nil {
-			return err
+		name, posColor, infoErr := infoColis(words)
+		if infoErr != nil {
+			return infoErr
 		}
-		warehouse.AddPackage(name, posColor[0], posColor[1], posColor[2])
+		graphErr := warehouse.addPackage(name, posColor[0], posColor[1], posColor[2])
+		if graphErr != nil {
+			return graphErr
+		}
 	case 3:
-		name, pos, err := infoPaletteCamion(words)
-		if err != nil {
-			return err
+		name, pos, infoErr := infoPaletteCamion(words)
+		if infoErr != nil {
+			return infoErr
 		}
-		warehouse.AddTransporter(name, pos[0], pos[1])
+		graphErr := warehouse.addTransporter(name, pos[0], pos[1])
+		if graphErr != nil {
+			return graphErr
+		}
 	case 5:
-		name, posSizeRound, err := infoPaletteCamion(words)
-		if err != nil {
-			return err
+		name, posSizeRound, infoErr := infoPaletteCamion(words)
+		if infoErr != nil {
+			return infoErr
 		}
-		warehouse.AddTruck(name, posSizeRound[0], posSizeRound[1], posSizeRound[2], posSizeRound[3])
+		graphErr := warehouse.addTruck(name, posSizeRound[0], posSizeRound[1], posSizeRound[2], posSizeRound[3])
+		if graphErr != nil {
+			return graphErr
+		}
 	}
 	return nil
 }

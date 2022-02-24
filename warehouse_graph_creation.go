@@ -15,17 +15,22 @@ func (graph *WarehouseSquareGraph) initializeNodes() {
 	}
 }
 
-// AddPackage A method to add a package object to the graph.
-func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) {
+func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) error {
+	if !graph.areCoordinatesValid(x, y) {
+		return BadGraphCoordinates("addPackage")
+	}
 	box := Box{
 		name:  name,
 		color: color,
 	}
 	graph.nodes[x+(y*graph.height)].box = &box
+	return nil
 }
 
-// AddTruck A method to add a truck object to the graph.
-func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, maxLoad, maxTimer int) {
+func (graph *WarehouseSquareGraph) addTruck(name string, x, y, maxLoad, maxTimer int) error {
+	if !graph.areCoordinatesValid(x, y) {
+		return BadGraphCoordinates("addTruck")
+	}
 	truck := Truck{
 		name:         name,
 		maxLoad:      maxLoad,
@@ -35,14 +40,18 @@ func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, maxLoad, maxTimer
 		isGone:       false,
 	}
 	graph.nodes[x+(y*graph.height)].truck = &truck
+	return nil
 }
 
-// AddTransporter A method to add a transporter object to the graph.
-func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) {
+func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) error {
+	if !graph.areCoordinatesValid(x, y) {
+		return BadGraphCoordinates("addTransporter")
+	}
 	transporter := Transporter{
 		name:     name,
 		isLoaded: false,
 		box:      nil,
 	}
 	graph.nodes[x+(y*graph.height)].transporter = &transporter
+	return nil
 }

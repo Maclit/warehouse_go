@@ -114,3 +114,10 @@ func (graph *WarehouseSquareGraph) validate() error {
 	}
 	return nil
 }
+
+func (graph *WarehouseSquareGraph) areCoordinatesValid(x, y int) bool {
+	if x >= graph.width || y >= graph.height {
+		return false
+	}
+	return true
+}
