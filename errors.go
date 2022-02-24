@@ -58,9 +58,9 @@ func (e GraphError) Error() string {
 	return fmt.Sprintf("Invalid graph content : %s ", string(e))
 }
 
-// BadGraphCoordinates Returned when coordiantes passed to the graph does not exist.
-type BadGraphCoordinates string
+// BadGraphCoordinatesError Returned when coordinates passed to the graph does not exist.
+type BadGraphCoordinatesError string
 
-func (e BadGraphCoordinates) Error() string {
-	return fmt.Sprintf("Invalid graph coordiantes : %s ", string(e))
+func (e BadGraphCoordinatesError) Error() string {
+	return fmt.Sprintf("Invalid graph coordinates : %s ", string(e))
 }

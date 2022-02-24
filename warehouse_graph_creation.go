@@ -17,7 +17,7 @@ func (graph *WarehouseSquareGraph) initializeNodes() {
 
 func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) error {
 	if !graph.areCoordinatesValid(x, y) {
-		return BadGraphCoordinates("addPackage")
+		return BadGraphCoordinatesError("addPackage")
 	}
 	box := Box{
 		name:  name,
@@ -29,7 +29,7 @@ func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) erro
 
 func (graph *WarehouseSquareGraph) addTruck(name string, x, y, maxLoad, maxTimer int) error {
 	if !graph.areCoordinatesValid(x, y) {
-		return BadGraphCoordinates("addTruck")
+		return BadGraphCoordinatesError("addTruck")
 	}
 	truck := Truck{
 		name:         name,
@@ -45,7 +45,7 @@ func (graph *WarehouseSquareGraph) addTruck(name string, x, y, maxLoad, maxTimer
 
 func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) error {
 	if !graph.areCoordinatesValid(x, y) {
-		return BadGraphCoordinates("addTransporter")
+		return BadGraphCoordinatesError("addTransporter")
 	}
 	transporter := Transporter{
 		name:     name,
