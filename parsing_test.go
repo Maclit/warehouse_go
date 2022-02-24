@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
 
@@ -186,5 +187,45 @@ func TestInfoPaletteCamionErrorPos(t *testing.T) {
 	infoName, infoPos, err := infoPaletteCamion([]string{"name", "-5", "5"})
 	if err == nil || len(infoPos) > 0 || infoName != "" {
 		t.Errorf("the error negative number is not caught")
+	}
+}
+
+func TestFindObject(t *testing.T) {
+	warehouseTest := createWarehouseGraph(6, 6)
+	err := findObject([]string{"name", "5", "5", "green"}, warehouseTest)
+	if err != nil {
+		t.Errorf("an error occurs during the test to create an object package from line")
+	}
+	errPalette := findObject([]string{"name", "5", "5"}, warehouseTest)
+	if errPalette != nil {
+		t.Errorf("an error occurs during the test to create an object Palette from line")
+	}
+	errTruck := findObject([]string{"name", "5", "5", "100", "100"}, warehouseTest)
+	if errTruck != nil {
+		t.Errorf("an error occurs during the test to create an object truck from line")
+	}
+}
+
+func TestFindObjectError(t *testing.T) {
+	warehouseTest := createWarehouseGraph(6, 6)
+	err := findObject([]string{"name", "name", "5", "green"}, warehouseTest)
+	if err == nil {
+		t.Errorf("no error occurs during the test to create an object package from line")
+	}
+	errPalette := findObject([]string{"name", "-5", "5"}, warehouseTest)
+	if errPalette == nil {
+		t.Errorf("no error occurs during the test to create an object Palette from line")
+	}
+	errTruck := findObject([]string{"name", "5", "5", "test", "100"}, warehouseTest)
+	if errTruck == nil {
+		t.Errorf("no error occurs during the test to create an object truck from line")
+	}
+}
+
+func TestAnalyzeAllText(t *testing.T) {
+	os.Args = []string{"cmd", "test.txt"}
+	warehouseGraph, round, err := analyzeAllText()
+	if err != nil || warehouseGraph == nil || round == 0 {
+		t.Errorf("an error occurs during the analyze of the file")
 	}
 }
