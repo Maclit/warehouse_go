@@ -31,7 +31,7 @@ The project in composed of only 1 package : main. All its files can be found in 
 
 In the warehouse_graph_*.go files, all function related to the graph representing the map can be found.
 
-This functions are used in the game_logic_*.go files, where all the main loop logic is found.
+This functions are used in the game_logic_main_lopp.go files, where all the main loop logic is found.
 
 
 ## STRATEGY
