@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
+func (graph *WarehouseSquareGraph) unloadTransporter(transporterPoint Point) {
 	x := transporterPoint.x
 	y := transporterPoint.y
 	if graph.nodes[x+(y*graph.height)].truck.isGone {
@@ -30,7 +30,7 @@ func unloadTransporter(graph *WarehouseSquareGraph, transporterPoint Point) {
 	graph.nodes[x+(y*graph.height)].transporter.isLoaded = false
 }
 
-func moveTransporterToNextPosition(graph *WarehouseSquareGraph, start, end Point) {
+func (graph *WarehouseSquareGraph) moveTransporterToNextPosition(start, end Point) {
 	newX := end.x
 	newY := end.y
 	oldX := start.x
@@ -40,7 +40,7 @@ func moveTransporterToNextPosition(graph *WarehouseSquareGraph, start, end Point
 	fmt.Printf(" GO [%d,%d]\n", newX, newY)
 }
 
-func isNodeInArray(array []Node, node Node) bool {
+func (graph *WarehouseSquareGraph) isNodeInArray(array []Node, node Node) bool {
 	for _, element := range array {
 		if element.point.x == node.point.x && element.point.y == node.point.y {
 			return true
@@ -49,7 +49,7 @@ func isNodeInArray(array []Node, node Node) bool {
 	return false
 }
 
-func isGameFinished(graph *WarehouseSquareGraph) bool {
+func (graph *WarehouseSquareGraph) isGameFinished() bool {
 	for i := 0; i < graph.width*graph.height; i++ {
 		node := graph.nodes[i]
 		if node.box != nil {

@@ -11,16 +11,16 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		transporterNodeList := graph.getWharehouseNodeListWithObject(TRANSPORTER)
 		for _, transporterNode := range transporterNodeList {
 			if transporterNode.transporter.isLoaded {
-				moveTransporterTowardNearestTruck(graph, transporterNode)
+				graph.moveTransporterTowardNearestTruck(transporterNode)
 			} else {
-				moveTransporterTowardNearestBox(graph, transporterNode)
+				graph.moveTransporterTowardNearestBox(transporterNode)
 			}
 		}
 		truckNodeList := graph.getWharehouseNodeListWithObject(TRUCK)
 		for _, truckNode := range truckNodeList {
-			updateTruckStatus(graph, truckNode)
+			graph.updateTruckStatus(truckNode)
 		}
-		if isGameFinished(graph) && graph.areAllTrucksGone() {
+		if graph.isGameFinished() && graph.areAllTrucksGone() {
 			emoji, err := strconv.Unquote(`"😎"`)
 			if err == nil {
 				fmt.Println("\n", emoji)
