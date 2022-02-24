@@ -191,7 +191,7 @@ func TestInfoPaletteCamionErrorPos(t *testing.T) {
 }
 
 func TestFindObject(t *testing.T) {
-	warehouseTest := createWarehouseGraph(6, 6)
+	warehouseTest := CreateWarehouseGraph(6, 6)
 	err := findObject([]string{"name", "5", "5", "green"}, warehouseTest)
 	if err != nil {
 		t.Errorf("an error occurs during the test to create an object package from line")
@@ -207,7 +207,7 @@ func TestFindObject(t *testing.T) {
 }
 
 func TestFindObjectError(t *testing.T) {
-	warehouseTest := createWarehouseGraph(6, 6)
+	warehouseTest := CreateWarehouseGraph(6, 6)
 	err := findObject([]string{"name", "name", "5", "green"}, warehouseTest)
 	if err == nil {
 		t.Errorf("no error occurs during the test to create an object package from line")

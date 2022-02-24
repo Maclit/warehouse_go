@@ -1,21 +1,15 @@
 package main
 
-func createWarehouseGraph(height, width int) *WarehouseSquareGraph {
+// CreateWarehouseGraph Create a new graph
+func CreateWarehouseGraph(height, width int) *WarehouseSquareGraph {
 	warehouseGraph := WarehouseSquareGraph{width: width, height: height}
 
 	warehouseGraph.initializeNodes()
 	return &warehouseGraph
 }
 
-func (graph *WarehouseSquareGraph) initializeNodes() {
-	graph.nodes = make([]Node, graph.width*graph.height)
-
-	for i := 0; i < graph.width*graph.height; i++ {
-		graph.nodes[i] = Node{point: Point{x: i % graph.width, y: i / graph.height}, box: nil, transporter: nil, truck: nil}
-	}
-}
-
-func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) error {
+// AddPackage Add a package object to the graph
+func (graph *WarehouseSquareGraph) AddPackage(name string, x, y, color int) error {
 	if !graph.areCoordinatesValid(x, y) {
 		return BadGraphCoordinatesError("addPackage")
 	}
@@ -27,7 +21,8 @@ func (graph *WarehouseSquareGraph) addPackage(name string, x, y, color int) erro
 	return nil
 }
 
-func (graph *WarehouseSquareGraph) addTruck(name string, x, y, maxLoad, maxTimer int) error {
+// AddTruck Add a truck object to the graph
+func (graph *WarehouseSquareGraph) AddTruck(name string, x, y, maxLoad, maxTimer int) error {
 	if !graph.areCoordinatesValid(x, y) {
 		return BadGraphCoordinatesError("addTruck")
 	}
@@ -43,7 +38,8 @@ func (graph *WarehouseSquareGraph) addTruck(name string, x, y, maxLoad, maxTimer
 	return nil
 }
 
-func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) error {
+// AddTransporter Add a transporter object to the graph
+func (graph *WarehouseSquareGraph) AddTransporter(name string, x, y int) error {
 	if !graph.areCoordinatesValid(x, y) {
 		return BadGraphCoordinatesError("addTransporter")
 	}
@@ -54,4 +50,12 @@ func (graph *WarehouseSquareGraph) addTransporter(name string, x, y int) error {
 	}
 	graph.nodes[x+(y*graph.height)].transporter = &transporter
 	return nil
+}
+
+func (graph *WarehouseSquareGraph) initializeNodes() {
+	graph.nodes = make([]Node, graph.width*graph.height)
+
+	for i := 0; i < graph.width*graph.height; i++ {
+		graph.nodes[i] = Node{point: Point{x: i % graph.width, y: i / graph.height}, box: nil, transporter: nil, truck: nil}
+	}
 }

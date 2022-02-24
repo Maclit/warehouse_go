@@ -68,7 +68,7 @@ func findObject(words []string, warehouse *WarehouseSquareGraph) error {
 		if infoErr != nil {
 			return infoErr
 		}
-		graphErr := warehouse.addPackage(name, posColor[0], posColor[1], posColor[2])
+		graphErr := warehouse.AddPackage(name, posColor[0], posColor[1], posColor[2])
 		if graphErr != nil {
 			return graphErr
 		}
@@ -77,7 +77,7 @@ func findObject(words []string, warehouse *WarehouseSquareGraph) error {
 		if infoErr != nil {
 			return infoErr
 		}
-		graphErr := warehouse.addTransporter(name, pos[0], pos[1])
+		graphErr := warehouse.AddTransporter(name, pos[0], pos[1])
 		if graphErr != nil {
 			return graphErr
 		}
@@ -86,7 +86,7 @@ func findObject(words []string, warehouse *WarehouseSquareGraph) error {
 		if infoErr != nil {
 			return infoErr
 		}
-		graphErr := warehouse.addTruck(name, posSizeRound[0], posSizeRound[1], posSizeRound[2], posSizeRound[3])
+		graphErr := warehouse.AddTruck(name, posSizeRound[0], posSizeRound[1], posSizeRound[2], posSizeRound[3])
 		if graphErr != nil {
 			return graphErr
 		}
@@ -108,29 +108,29 @@ func analyzeAllText() (warehouseGraph *WarehouseSquareGraph, round int, err erro
 	text, errRecupMap := readMap()
 
 	if errRecupMap != nil {
-		warehouseGraphErr := createWarehouseGraph(0, 0)
+		warehouseGraphErr := CreateWarehouseGraph(0, 0)
 		return warehouseGraphErr, 0, errRecupMap
 	}
 	firstLine, err := divide(text[0])
 	if err != nil {
-		warehouseGraphErr := createWarehouseGraph(0, 0)
+		warehouseGraphErr := CreateWarehouseGraph(0, 0)
 		return warehouseGraphErr, 0, err
 	}
 	mapInfo, errMap := infoMap(firstLine)
 	if errMap != nil {
-		warehouseGraphErr := createWarehouseGraph(0, 0)
+		warehouseGraphErr := CreateWarehouseGraph(0, 0)
 		return warehouseGraphErr, 0, errMap
 	}
-	warehouseGraph = createWarehouseGraph(mapInfo[0], mapInfo[1])
+	warehouseGraph = CreateWarehouseGraph(mapInfo[0], mapInfo[1])
 	for n := 1; n < len(text); n++ {
 		line, err := divide(text[n])
 		if err != nil {
-			warehouseGraphErr := createWarehouseGraph(0, 0)
+			warehouseGraphErr := CreateWarehouseGraph(0, 0)
 			return warehouseGraphErr, 0, err
 		}
 		errLine := findObject(line, warehouseGraph)
 		if errLine != nil {
-			warehouseGraphErr := createWarehouseGraph(0, 0)
+			warehouseGraphErr := CreateWarehouseGraph(0, 0)
 			return warehouseGraphErr, 0, errLine
 		}
 	}
