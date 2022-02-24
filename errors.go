@@ -2,10 +2,11 @@ package main
 
 import "fmt"
 
+// ArgumentsError correspond to an error of executable arguments
 type ArgumentsError string
 
-func (e ArgumentsError) Error() string{
-	return fmt.Sprintf("Missing map argument: %s", string(e))
+func (e ArgumentsError) Error() string {
+	return fmt.Sprintf("Bad parameters: %s", string(e))
 }
 
 // InputError correspond to an error of Input
@@ -19,7 +20,7 @@ func (e InputError) Error() string {
 type MapError string
 
 func (e MapError) Error() string {
-	return fmt.Sprintf("The input for the map is not a number or not greater than zero, string: %s ", string(e))
+	return fmt.Sprintf("The input is invalid, string: %s ", string(e))
 }
 
 // ColorError correspond to an error in the box color
@@ -48,4 +49,11 @@ type NoNeighborNodeError string
 
 func (e NoNeighborNodeError) Error() string {
 	return fmt.Sprintf("Node has no neighbor. direction : %s ", string(e))
+}
+
+// GraphError Returned when graph content are not valid.
+type GraphError string
+
+func (e GraphError) Error() string {
+	return fmt.Sprintf("Invalid graph content : %s ", string(e))
 }

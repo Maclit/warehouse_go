@@ -4,32 +4,17 @@ import (
 	"bufio"
 	"log"
 	"os"
-	// "strings"
 )
 
-// func getMap() string {
-// 	fmt.Print("Enter map file path: ")
-// 	reader := bufio.NewReader(os.Stdin)
-// 	input, err := reader.ReadString('\n')
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	input = strings.ReplaceAll(input, "\n", "")
-// 	input = strings.ReplaceAll(input, "\r", "")
-// 	return input
-// }
-
 func readMap() (lines []string, err error) {
-	// lines := []string{}
 	var line string
-	if len(os.Args) <= 1 {
-		argsNull := []string{}
-		return argsNull, ArgumentsError(os.Args[0])
+	if len(os.Args) <= 1 || len(os.Args) > 2 {
+		return []string{}, ArgumentsError("Incorrect arguments.")
 	}
 	mapfile := os.Args[1]
 	f, err := os.Open(mapfile)
 	if err != nil {
-		log.Fatal(err)
+		return []string{}, ArgumentsError("Wrong file name.")
 	}
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {

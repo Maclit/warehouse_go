@@ -6,29 +6,22 @@ import (
 )
 
 func play(turns int, graph *WarehouseSquareGraph) {
-	if graph.isEmpty() {
-		emoji, err := strconv.Unquote(`"🚒"`)
-		if err == nil {
-			fmt.Println("\n", emoji)
-		}
-		return
-	}
 	for i := 0; i < turns; i++ {
 		fmt.Printf("tour %d\n", i+1)
-		transporterNodeList := getWharehouseNodeListWithObject(graph, TRANSPORTER)
+		transporterNodeList := graph.getWharehouseNodeListWithObject(TRANSPORTER)
 		for _, transporterNode := range transporterNodeList {
 			if transporterNode.transporter.isLoaded {
-				moveTransporterTowardNearestTruck(graph, transporterNode)
+				graph.moveTransporterTowardNearestTruck(transporterNode)
 			} else {
-				moveTransporterTowardNearestBox(graph, transporterNode)
+				graph.moveTransporterTowardNearestBox(transporterNode)
 			}
 		}
-		truckNodeList := getWharehouseNodeListWithObject(graph, TRUCK)
+		truckNodeList := graph.getWharehouseNodeListWithObject(TRUCK)
 		for _, truckNode := range truckNodeList {
-			updateTruckStatus(graph, truckNode)
+			graph.updateTruckStatus(truckNode)
 		}
-		if isGameFinished(graph) && graph.areAllTrucksGone() {
-			emoji, err := strconv.Unquote(`"🚒"`)
+		if graph.isGameFinished() && graph.areAllTrucksGone() {
+			emoji, err := strconv.Unquote(`"😎"`)
 			if err == nil {
 				fmt.Println("\n", emoji)
 			}
@@ -36,12 +29,29 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		}
 		fmt.Println()
 	}
+	emoji, err := strconv.Unquote(`"🙂"`)
+	if err == nil {
+		fmt.Println("\n", emoji)
+	}
 }
 
 func main() {
-	warehouseGraph, nbTurn, err := analyzeAllText()
-	if err != nil {
-		fmt.Println(err)
+	warehouseGraph, nbTurn, fileErr := analyzeAllText()
+	if fileErr != nil {
+		fmt.Println(fileErr)
+		emoji, emojiErr := strconv.Unquote(`"😱"`)
+		if emojiErr == nil {
+			fmt.Println("\n", emoji)
+		}
+		return
+	}
+	graphErr := warehouseGraph.validate()
+	if graphErr != nil {
+		fmt.Println(graphErr)
+		emoji, emojiErr := strconv.Unquote(`"😱"`)
+		if emojiErr == nil {
+			fmt.Println("\n", emoji)
+		}
 		return
 	}
 	play(nbTurn, warehouseGraph)

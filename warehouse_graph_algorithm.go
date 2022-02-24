@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node) {
+func (graph *WarehouseSquareGraph) moveTransporterTowardNearestBox(startNode Node) {
 	fmt.Print(startNode.transporter.name)
 	if graph.isEmpty() {
 		if graph.doesNodeHasObject(startNode.point, TRUCK) {
@@ -10,17 +10,17 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node
 			if err != nil {
 				fmt.Println(err.Error())
 			}
-			moveTransporterToNextPosition(graph, startNode.point, neighbor.point)
+			graph.moveTransporterToNextPosition(startNode.point, neighbor.point)
 		} else {
 			fmt.Print(" WAIT\n")
 		}
 		return
 	}
-	closestBox := findClosestObject(graph, startNode, BOX)
+	closestBox := graph.findClosestObject(startNode, BOX)
 	if closestBox.box == nil {
 		return
 	}
-	shortestPath := shortestPath(graph, startNode, closestBox, make([]Node, 0))
+	shortestPath := graph.shortestPath(startNode, closestBox, make([]Node, 0))
 	if len(shortestPath) == 2 {
 		boxX := shortestPath[1].point.x
 		boxY := shortestPath[1].point.y
@@ -39,35 +39,35 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node
 		}
 		graph.nodes[boxX+(boxY*graph.height)].box = nil
 	} else {
-		moveTransporterToNextPosition(graph, startNode.point, shortestPath[1].point)
+		graph.moveTransporterToNextPosition(startNode.point, shortestPath[1].point)
 	}
 }
 
-func moveTransporterTowardNearestTruck(graph *WarehouseSquareGraph, startNode Node) {
+func (graph *WarehouseSquareGraph) moveTransporterTowardNearestTruck(startNode Node) {
 	fmt.Print(startNode.transporter.name)
 	if graph.doesNodeHasObject(startNode.point, TRUCK) {
-		unloadTransporter(graph, startNode.point)
+		graph.unloadTransporter(startNode.point)
 	} else {
-		closestBox := findClosestObject(graph, startNode, TRUCK)
+		closestBox := graph.findClosestObject(startNode, TRUCK)
 		if closestBox.truck == nil {
 			fmt.Print(" WAIT\n")
 			return
 		}
-		shortestPath := shortestPath(graph, startNode, closestBox, make([]Node, 0))
-		moveTransporterToNextPosition(graph, startNode.point, shortestPath[1].point)
+		shortestPath := graph.shortestPath(startNode, closestBox, make([]Node, 0))
+		graph.moveTransporterToNextPosition(startNode.point, shortestPath[1].point)
 	}
 }
 
-func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node) []Node {
+func (graph *WarehouseSquareGraph) shortestPath(start Node, end Node, path []Node) []Node {
 	path = append(path, start)
-	if isNodeInArray(path, end) {
+	if graph.isNodeInArray(path, end) {
 		return path
 	}
 	shortest := make([]Node, 0)
 	neighbors := getAllNeighborsNode(graph, start)
 	for _, node := range neighbors {
-		if !isNodeInArray(path, node) {
-			newPath := shortestPath(graph, node, end, path)
+		if !graph.isNodeInArray(path, node) {
+			newPath := graph.shortestPath(node, end, path)
 			if len(newPath) > 0 {
 				if len(shortest) == 0 || (len(newPath) < len(shortest)) {
 					shortest = newPath
@@ -78,7 +78,7 @@ func shortestPath(graph *WarehouseSquareGraph, start Node, end Node, path []Node
 	return shortest
 }
 
-func findClosestObject(graph *WarehouseSquareGraph, startNode Node, toFind int) Node {
+func (graph *WarehouseSquareGraph) findClosestObject(startNode Node, toFind int) Node {
 	toVisit := getAllNeighborsNode(graph, startNode)
 	visited := []Node{}
 	for len(toVisit) > 0 {
@@ -90,7 +90,7 @@ func findClosestObject(graph *WarehouseSquareGraph, startNode Node, toFind int) 
 		}
 		neightborsList := getAllNeighborsNode(graph, nextNode)
 		for _, node := range neightborsList {
-			if !isNodeInArray(visited, node) {
+			if !graph.isNodeInArray(visited, node) {
 				toVisit = append(toVisit, node)
 			}
 		}
@@ -98,7 +98,7 @@ func findClosestObject(graph *WarehouseSquareGraph, startNode Node, toFind int) 
 	return Node{}
 }
 
-func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
+func (graph *WarehouseSquareGraph) updateTruckStatus(truckNode Node) {
 	fmt.Print(truckNode.truck.name)
 	x := truckNode.point.x
 	y := truckNode.point.y
@@ -114,7 +114,7 @@ func updateTruckStatus(graph *WarehouseSquareGraph, truckNode Node) {
 		}
 		return
 	}
-	if isGameFinished(graph) {
+	if graph.isGameFinished() {
 		graph.nodes[x+(y*graph.height)].truck.currentTimer = graph.nodes[x+(y*graph.height)].truck.maxTimer
 	}
 	fmt.Printf(" WAITING %d/%d\n", graph.nodes[x+(y*graph.height)].truck.currentLoad, graph.nodes[x+(y*graph.height)].truck.maxLoad)
