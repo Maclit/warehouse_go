@@ -6,16 +6,9 @@ import (
 )
 
 func play(turns int, graph *WarehouseSquareGraph) {
-	if graph.isEmpty() {
-		emoji, err := strconv.Unquote(`"😎"`)
-		if err == nil {
-			fmt.Println("\n", emoji)
-		}
-		return
-	}
 	for i := 0; i < turns; i++ {
 		fmt.Printf("tour %d\n", i+1)
-		transporterNodeList := getWharehouseNodeListWithObject(graph, TRANSPORTER)
+		transporterNodeList := graph.getWharehouseNodeListWithObject(TRANSPORTER)
 		for _, transporterNode := range transporterNodeList {
 			if transporterNode.transporter.isLoaded {
 				moveTransporterTowardNearestTruck(graph, transporterNode)
@@ -23,7 +16,7 @@ func play(turns int, graph *WarehouseSquareGraph) {
 				moveTransporterTowardNearestBox(graph, transporterNode)
 			}
 		}
-		truckNodeList := getWharehouseNodeListWithObject(graph, TRUCK)
+		truckNodeList := graph.getWharehouseNodeListWithObject(TRUCK)
 		for _, truckNode := range truckNodeList {
 			updateTruckStatus(graph, truckNode)
 		}
@@ -46,6 +39,15 @@ func main() {
 	warehouseGraph, nbTurn, fileErr := analyzeAllText()
 	if fileErr != nil {
 		fmt.Println(fileErr)
+		emoji, emojiErr := strconv.Unquote(`"😱"`)
+		if emojiErr == nil {
+			fmt.Println("\n", emoji)
+		}
+		return
+	}
+	graphErr := warehouseGraph.validate()
+	if graphErr != nil {
+		fmt.Println(graphErr)
 		emoji, emojiErr := strconv.Unquote(`"😱"`)
 		if emojiErr == nil {
 			fmt.Println("\n", emoji)

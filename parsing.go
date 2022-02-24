@@ -9,10 +9,12 @@ func infoMap(text []string) (infoMap []int, err error) {
 	for n := 0; n < len(text); n++ {
 		intVar, err := strconv.Atoi(text[n])
 		if err != nil || intVar < 0 {
-			MapNull := []int{}
-			return MapNull, MapError(text[n])
+			return []int{}, MapError(text[n])
 		}
 		infoMap = append(infoMap, intVar)
+	}
+	if len(infoMap) != 3 || (infoMap[2] < 10 || infoMap[2] > 10000) {
+		return []int{}, MapError("Invalid number of turns")
 	}
 	return infoMap, nil
 }

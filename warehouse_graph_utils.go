@@ -62,7 +62,7 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 	return true
 }
 
-func getWharehouseNodeListWithObject(graph *WarehouseSquareGraph, object int) []Node {
+func (graph *WarehouseSquareGraph) getWharehouseNodeListWithObject(object int) []Node {
 	objectList := []Node{}
 
 	for x := 0; x < graph.width; x++ {
@@ -116,4 +116,14 @@ func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bo
 		return true
 	}
 	return false
+}
+
+func (graph *WarehouseSquareGraph) validate() error {
+	if len(graph.getWharehouseNodeListWithObject(TRUCK)) == 0 {
+		return GraphError("No trucks")
+	}
+	if len(graph.getWharehouseNodeListWithObject(TRANSPORTER)) == 0 {
+		return GraphError("No transporters")
+	}
+	return nil
 }
