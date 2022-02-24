@@ -4,23 +4,9 @@ import (
 	"bufio"
 	"log"
 	"os"
-	// "strings"
 )
 
-// func getMap() string {
-// 	fmt.Print("Enter map file path: ")
-// 	reader := bufio.NewReader(os.Stdin)
-// 	input, err := reader.ReadString('\n')
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	input = strings.ReplaceAll(input, "\n", "")
-// 	input = strings.ReplaceAll(input, "\r", "")
-// 	return input
-// }
-
 func readMap() (lines []string, err error) {
-	// lines := []string{}
 	var line string
 	if len(os.Args) <= 1 {
 		argsNull := []string{}
