@@ -7,7 +7,7 @@ import (
 
 func play(turns int, graph *WarehouseSquareGraph) {
 	if graph.isEmpty() {
-		emoji, err := strconv.Unquote(`"🚒"`)
+		emoji, err := strconv.Unquote(`"😎"`)
 		if err == nil {
 			fmt.Println("\n", emoji)
 		}
@@ -28,7 +28,7 @@ func play(turns int, graph *WarehouseSquareGraph) {
 			updateTruckStatus(graph, truckNode)
 		}
 		if isGameFinished(graph) && graph.areAllTrucksGone() {
-			emoji, err := strconv.Unquote(`"🚒"`)
+			emoji, err := strconv.Unquote(`"😎"`)
 			if err == nil {
 				fmt.Println("\n", emoji)
 			}
@@ -36,12 +36,20 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		}
 		fmt.Println()
 	}
+	emoji, err := strconv.Unquote(`"🙂"`)
+	if err == nil {
+		fmt.Println("\n", emoji)
+	}
 }
 
 func main() {
-	warehouseGraph, nbTurn, err := analyzeAllText()
-	if err != nil {
-		fmt.Println(err)
+	warehouseGraph, nbTurn, fileErr := analyzeAllText()
+	if fileErr != nil {
+		fmt.Println(fileErr)
+		emoji, emojiErr := strconv.Unquote(`"😱"`)
+		if emojiErr == nil {
+			fmt.Println("\n", emoji)
+		}
 		return
 	}
 	play(nbTurn, warehouseGraph)

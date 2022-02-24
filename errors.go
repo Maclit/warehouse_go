@@ -2,10 +2,11 @@ package main
 
 import "fmt"
 
+// ArgumentsError correspond to an error of executable arguments
 type ArgumentsError string
 
-func (e ArgumentsError) Error() string{
-	return fmt.Sprintf("Missing map argument: %s", string(e))
+func (e ArgumentsError) Error() string {
+	return fmt.Sprintf("Bad parameters: %s", string(e))
 }
 
 // InputError correspond to an error of Input
