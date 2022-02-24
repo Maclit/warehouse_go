@@ -1,15 +1,31 @@
 package main
 
-func (graph *WarehouseSquareGraph) isNodeInArray(array []Node, node Node) bool {
-	for _, element := range array {
-		if element.point.x == node.point.x && element.point.y == node.point.y {
-			return true
-		}
+// Validate Check if hte graph is valid
+func (graph *WarehouseSquareGraph) Validate() error {
+	if len(graph.GetWharehouseNodeListWithObject(TRUCK)) == 0 {
+		return GraphError("No trucks")
 	}
-	return false
+	if len(graph.GetWharehouseNodeListWithObject(TRANSPORTER)) == 0 {
+		return GraphError("No transporters")
+	}
+	return nil
 }
 
-func (graph *WarehouseSquareGraph) getWharehouseNodeListWithObject(object int) []Node {
+// AreAllTrucksGone Check if all trucks are gone
+func (graph *WarehouseSquareGraph) AreAllTrucksGone() bool {
+	status := true
+
+	for i := 0; i < graph.width*graph.height; i++ {
+		node := graph.nodes[i]
+		if node.truck != nil && !node.truck.isGone {
+			status = false
+		}
+	}
+	return status
+}
+
+// GetWharehouseNodeListWithObject Get a list of all nodes containing object
+func (graph *WarehouseSquareGraph) GetWharehouseNodeListWithObject(object int) []Node {
 	objectList := []Node{}
 
 	for x := 0; x < graph.width; x++ {
@@ -38,18 +54,6 @@ func (graph *WarehouseSquareGraph) isEmpty() bool {
 	return true
 }
 
-func (graph *WarehouseSquareGraph) areAllTrucksGone() bool {
-	status := true
-
-	for i := 0; i < graph.width*graph.height; i++ {
-		node := graph.nodes[i]
-		if node.truck != nil && !node.truck.isGone {
-			status = false
-		}
-	}
-	return status
-}
-
 func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bool {
 	x := coord.x
 	y := coord.y
@@ -65,19 +69,18 @@ func (graph *WarehouseSquareGraph) doesNodeHasObject(coord Point, object int) bo
 	return false
 }
 
-func (graph *WarehouseSquareGraph) validate() error {
-	if len(graph.getWharehouseNodeListWithObject(TRUCK)) == 0 {
-		return GraphError("No trucks")
-	}
-	if len(graph.getWharehouseNodeListWithObject(TRANSPORTER)) == 0 {
-		return GraphError("No transporters")
-	}
-	return nil
-}
-
 func (graph *WarehouseSquareGraph) areCoordinatesValid(x, y int) bool {
 	if x >= graph.width || y >= graph.height {
 		return false
 	}
 	return true
+}
+
+func (graph *WarehouseSquareGraph) isNodeInArray(array []Node, node Node) bool {
+	for _, element := range array {
+		if element.point.x == node.point.x && element.point.y == node.point.y {
+			return true
+		}
+	}
+	return false
 }

@@ -33,15 +33,15 @@ func isGameFinished(graph *WarehouseSquareGraph) bool {
 }
 
 func processTransporters(graph *WarehouseSquareGraph) error {
-	transporterNodeList := graph.getWharehouseNodeListWithObject(TRANSPORTER)
+	transporterNodeList := graph.GetWharehouseNodeListWithObject(TRANSPORTER)
 	for _, transporterNode := range transporterNodeList {
 		if transporterNode.transporter.isLoaded {
-			err := graph.moveTransporterTowardNearestTruck(transporterNode)
+			err := graph.MoveTransporterTowardNearestTruck(transporterNode)
 			if err != nil {
 				return err
 			}
 		} else {
-			err := graph.moveTransporterTowardNearestBox(transporterNode)
+			err := graph.MoveTransporterTowardNearestBox(transporterNode)
 			if err != nil {
 				return err
 			}
@@ -51,9 +51,9 @@ func processTransporters(graph *WarehouseSquareGraph) error {
 }
 
 func processTrucks(graph *WarehouseSquareGraph) error {
-	truckNodeList := graph.getWharehouseNodeListWithObject(TRUCK)
+	truckNodeList := graph.GetWharehouseNodeListWithObject(TRUCK)
 	for _, truckNode := range truckNodeList {
-		err := graph.updateTruckStatus(truckNode)
+		err := graph.UpdateTruckStatus(truckNode)
 		if err != nil {
 			return err
 		}
@@ -72,7 +72,7 @@ func play(turns int, graph *WarehouseSquareGraph) error {
 		if truckErr != nil {
 			return truckErr
 		}
-		if isGameFinished(graph) && graph.areAllTrucksGone() {
+		if isGameFinished(graph) && graph.AreAllTrucksGone() {
 			printSuccessEmoji()
 			return nil
 		}

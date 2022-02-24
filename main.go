@@ -19,7 +19,7 @@ func main() {
 		printErrorEmoji()
 		return
 	}
-	graphErr := warehouseGraph.validate()
+	graphErr := warehouseGraph.Validate()
 	if graphErr != nil {
 		fmt.Println(graphErr)
 		printErrorEmoji()
