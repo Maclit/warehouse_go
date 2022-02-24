@@ -24,14 +24,38 @@ func play(turns int, graph *WarehouseSquareGraph) {
 		transporterNodeList := graph.getWharehouseNodeListWithObject(TRANSPORTER)
 		for _, transporterNode := range transporterNodeList {
 			if transporterNode.transporter.isLoaded {
-				graph.moveTransporterTowardNearestTruck(transporterNode)
+				err := graph.moveTransporterTowardNearestTruck(transporterNode)
+				if err != nil {
+					fmt.Println(err)
+					emoji, emojiErr := strconv.Unquote(`"😱"`)
+					if emojiErr == nil {
+						fmt.Println("\n", emoji)
+					}
+					return
+				}
 			} else {
-				graph.moveTransporterTowardNearestBox(transporterNode)
+				err := graph.moveTransporterTowardNearestBox(transporterNode)
+				if err != nil {
+					fmt.Println(err)
+					emoji, emojiErr := strconv.Unquote(`"😱"`)
+					if emojiErr == nil {
+						fmt.Println("\n", emoji)
+					}
+					return
+				}
 			}
 		}
 		truckNodeList := graph.getWharehouseNodeListWithObject(TRUCK)
 		for _, truckNode := range truckNodeList {
-			graph.updateTruckStatus(truckNode)
+			err := graph.updateTruckStatus(truckNode)
+			if err != nil {
+				fmt.Println(err)
+				emoji, emojiErr := strconv.Unquote(`"😱"`)
+				if emojiErr == nil {
+					fmt.Println("\n", emoji)
+				}
+				return
+			}
 		}
 		if isGameFinished(graph) && graph.areAllTrucksGone() {
 			emoji, err := strconv.Unquote(`"😎"`)
