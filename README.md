@@ -24,10 +24,15 @@ To run unit tests, use :
 go test
 ```
 
+
 ## PROJECT ORGANISATION
 
 The project in composed of only 1 package : main. All its files can be found in the root directory.
-The main part of the program is contained in the warehouse_graph_*.go files, it is where the logic is being run.
+
+In the warehouse_graph_*.go files, all function related to the graph representing the map can be found.
+
+This functions are used in the game_logic_*.go files, where all the main loop logic is found.
+
 
 ## STRATEGY
 

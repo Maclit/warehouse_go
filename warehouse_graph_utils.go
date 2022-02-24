@@ -49,19 +49,6 @@ func (graph *WarehouseSquareGraph) isNodeInArray(array []Node, node Node) bool {
 	return false
 }
 
-func (graph *WarehouseSquareGraph) isGameFinished() bool {
-	for i := 0; i < graph.width*graph.height; i++ {
-		node := graph.nodes[i]
-		if node.box != nil {
-			return false
-		}
-		if node.transporter != nil && node.transporter.isLoaded {
-			return false
-		}
-	}
-	return true
-}
-
 func (graph *WarehouseSquareGraph) getWharehouseNodeListWithObject(object int) []Node {
 	objectList := []Node{}
 
