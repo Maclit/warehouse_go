@@ -22,22 +22,7 @@ func moveTransporterTowardNearestBox(graph *WarehouseSquareGraph, startNode Node
 	}
 	shortestPath := graph.shortestPath(startNode, closestBox, make([]Node, 0))
 	if len(shortestPath) == 2 {
-		boxX := shortestPath[1].point.x
-		boxY := shortestPath[1].point.y
-		transporterX := startNode.point.x
-		transporterY := startNode.point.y
-		graph.nodes[transporterX+(transporterY*graph.height)].transporter.isLoaded = true
-		graph.nodes[transporterX+(transporterY*graph.height)].transporter.box = graph.nodes[boxX+(boxY*graph.height)].box
-		fmt.Printf(" TAKE %s ", graph.nodes[boxX+(boxY*graph.height)].box.name)
-		switch graph.nodes[boxX+(boxY*graph.height)].box.color {
-		case YELLOW:
-			fmt.Print("YELLOW\n")
-		case GREEN:
-			fmt.Print("GREEN\n")
-		case BLUE:
-			fmt.Print("BLUE\n")
-		}
-		graph.nodes[boxX+(boxY*graph.height)].box = nil
+		graph.loadTransporter(startNode.point, shortestPath[1].point)
 	} else {
 		graph.moveTransporterToNextPosition(startNode.point, shortestPath[1].point)
 	}
