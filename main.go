@@ -5,24 +5,29 @@ import (
 	"strconv"
 )
 
+func printErrorEmoji() {
+	emoji, emojiErr := strconv.Unquote(`"😱"`)
+	if emojiErr == nil {
+		fmt.Println("\n", emoji)
+	}
+}
+
 func main() {
 	warehouseGraph, nbTurn, fileErr := analyzeAllText()
 	if fileErr != nil {
 		fmt.Println(fileErr)
-		emoji, emojiErr := strconv.Unquote(`"😱"`)
-		if emojiErr == nil {
-			fmt.Println("\n", emoji)
-		}
+		printErrorEmoji()
 		return
 	}
 	graphErr := warehouseGraph.validate()
 	if graphErr != nil {
 		fmt.Println(graphErr)
-		emoji, emojiErr := strconv.Unquote(`"😱"`)
-		if emojiErr == nil {
-			fmt.Println("\n", emoji)
-		}
+		printErrorEmoji()
 		return
 	}
-	play(nbTurn, warehouseGraph)
+	playErr := play(nbTurn, warehouseGraph)
+	if playErr != nil {
+		fmt.Println(playErr)
+		printErrorEmoji()
+	}
 }
